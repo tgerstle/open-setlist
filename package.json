@@ -1,6 +1,6 @@
 {
-  "name": "mkesetlist-monorepo",
-  "version": "1.0.0",
+  "name": "local-live-music-tracker",
+  "version": "0.1.0",
   "description": "Root orchestrator for MKE Setlist scraper and frontend",
   "private": true,
   "scripts": {

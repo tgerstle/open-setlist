@@ -21,7 +21,7 @@ export function AppHeader({ isDev }: AppHeaderProps) {
           className="flex items-center gap-2 mr-4 flex-1 hover:no-underline group"
         >
           <div className="w-8 h-8 bg-[#0075de] rounded-[4px] flex items-center justify-center text-white font-bold tracking-tighter transition-transform group-hover:scale-105">
-            MKE
+            DEMO
           </div>
           <span className="font-bold text-[rgba(0,0,0,0.95)] tracking-tight group-hover:text-[#0075de] transition-colors">
             Setlist

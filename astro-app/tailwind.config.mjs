@@ -14,9 +14,9 @@ export default {
     extend: {
       colors: {
         mke: {
-          "blue-dark": "#0059b3", // Milwaukee Flag Blue (Dark)
-          "blue-light": "#80b3ff", // Milwaukee Flag Blue (Light)
-          gold: "#ffcc00", // Milwaukee Flag Gold (Sun)
+          "blue-dark": "#0059b3", // Demo City Flag Blue (Dark)
+          "blue-light": "#80b3ff", // Demo City Flag Blue (Light)
+          gold: "#ffcc00", // Demo City Flag Gold (Sun)
           white: "#ffffff", // White
         },
         // Direct aliasing for Shadcn and semantic use

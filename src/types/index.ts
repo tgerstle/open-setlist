@@ -37,7 +37,7 @@ export interface ArtistMetadata {
   artist_name: string;
   genres: string[]; // JSON array in DB
   sounds_like: string[]; // JSON array in DB
-  is_mke_local: boolean;
+  is_local: boolean;
   spotify_id: string | null;
   bandcamp_url: string | null;
   last_enriched_at: string;

@@ -16,13 +16,13 @@ let DefaultIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
-// Custom MKE Sunrise Marker (Gold/Blue)
+// Custom DEMO Sunrise Marker (Gold/Blue)
 const mkeIcon = L.divIcon({
-  className: "mke-marker",
+  className: "brand-marker",
   html: `
-    <div class="relative w-8 h-8 bg-mke-gold border-2 border-mke-blue-dark rounded-full shadow-lg flex items-center justify-center">
-      <div class="w-4 h-4 bg-mke-blue-dark rounded-full opacity-30 animate-ping absolute"></div>
-      <span class="text-[10px] font-black text-mke-blue-dark">MKE</span>
+    <div class="relative w-8 h-8 bg-brand-secondary border-2 border-brand-primary rounded-full shadow-lg flex items-center justify-center">
+      <div class="w-4 h-4 bg-brand-primary rounded-full opacity-30 animate-ping absolute"></div>
+      <span class="text-[10px] font-black text-brand-primary">DEMO</span>
     </div>
   `,
   iconSize: [32, 32],
@@ -43,12 +43,12 @@ interface Venue {
 }
 
 export default function VenueMap({ venues }: { venues: Venue[] }) {
-  const mkeCenter: [number, number] = [43.0389, -87.9065]; // Downtown MKE
+  const mapCenter: [number, number] = [39.8283, -98.5795]; // Downtown DEMO
 
   return (
     <div className="h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
       <MapContainer
-        center={mkeCenter}
+        center={mapCenter}
         zoom={12}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
@@ -68,10 +68,10 @@ export default function VenueMap({ venues }: { venues: Venue[] }) {
               >
                 <Popup>
                   <div className="p-1">
-                    <h3 className="font-black text-mke-blue-dark text-lg mb-1 leading-none">
+                    <h3 className="font-black text-brand-primary text-lg mb-1 leading-none">
                       {venue.name}
                     </h3>
-                    <p className="text-xs font-bold text-mke-blue-light uppercase tracking-widest mb-2">
+                    <p className="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">
                       {venue.neighborhood}
                     </p>
                     <p className="text-sm text-gray-600 mb-3">
@@ -79,7 +79,7 @@ export default function VenueMap({ venues }: { venues: Venue[] }) {
                     </p>
                     <a
                       href={`/venues/${venue.id}`}
-                      className="block text-center py-2 bg-mke-blue-dark text-white font-bold rounded hover:bg-mke-gold hover:text-mke-blue-dark transition-colors text-xs"
+                      className="block text-center py-2 bg-brand-primary text-white font-bold rounded hover:bg-brand-secondary hover:text-brand-primary transition-colors text-xs"
                     >
                       View Venue Schedule
                     </a>

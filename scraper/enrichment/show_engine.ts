@@ -79,7 +79,7 @@ const isMainModule =
     (process.argv[1] === import.meta.filename || process.argv[1].endsWith("show_engine.ts"));
 
 if (isMainModule) {
-    const dbPath = join(process.cwd(), "data", "mkesetlist.db");
+    const dbPath = join(process.cwd(), "data", "localmusic.db");
     const db = initDb(dbPath);
     runShowEnrichmentPass(db).catch(console.error);
 }

@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("MKE Setlist Navigation", () => {
+test.describe("Local Live Music Tracker Navigation", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
   test("should display the daily feed by default", async ({ page }) => {
-    await expect(page).toHaveTitle(/MKE Setlist/);
+    await expect(page).toHaveTitle(/Local Live Music Tracker/);
     await expect(page.locator("main")).toBeVisible();
   });
 

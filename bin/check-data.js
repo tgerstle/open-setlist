@@ -2,10 +2,10 @@ import Database from 'better-sqlite3';
 import { join } from 'node:path';
 import { existsSync } from 'node:fs';
 
-const DB_PATH = join('/Users/tgerstle/code/mkesetlist', 'data', 'mkesetlist.db');
+const DB_PATH = join('/Users/tgerstle/code/mkesetlist', 'data', 'localmusic.db');
 
 /**
- * MKE Setlist Data Health Check CLI
+ * Local Live Music Tracker Data Health Check CLI
  * 
  * Purpose:
  * - Provide a baseline of data quality.
@@ -23,7 +23,7 @@ function getDb() {
 function checkHealth() {
   const db = getDb();
   
-  console.log('\n📊 MKE SETLIST DATA HEALTH CHECK\n' + '='.repeat(35));
+  console.log('\n📊 DEMO SETLIST DATA HEALTH CHECK\n' + '='.repeat(35));
 
   // 1. Overall Stats
   const totalShows = db.prepare("SELECT COUNT(*) as count FROM shows WHERE event_date >= date('now')").get().count;

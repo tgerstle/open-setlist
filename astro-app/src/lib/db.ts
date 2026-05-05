@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import { join } from 'node:path';
 
-const DB_PATH = process.env.DATABASE_PATH || join(process.cwd(), '..', 'data', 'mkesetlist.db');
+const DB_PATH = process.env.DATABASE_PATH || join(process.cwd(), '..', 'data', 'localmusic.db');
 
 export function getDb() {
   return new Database(DB_PATH, { readonly: true });
@@ -17,7 +17,7 @@ export function getUpcomingShows() {
       v.theme_color as venue_theme_color,
       v.neighborhood,
       m.genres,
-      m.is_mke_local
+      m.is_local
     FROM shows s
     JOIN venues v ON s.venue_id = v.id
     LEFT JOIN artists_metadata m ON s.artist_name = m.artist_name

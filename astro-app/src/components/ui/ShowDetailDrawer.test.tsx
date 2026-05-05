@@ -36,7 +36,7 @@ describe('ShowDetailDrawer Overlay', () => {
 
     // Map URL assertion
     const mapLink = screen.getByRole('link', { name: /Get Directions/i });
-    expect(mapLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=Cactus%20Club%20Milwaukee%20WI');
+    expect(mapLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=Cactus%20Club%20Demo City%20WI');
 
     // Spotify URL assertion
     const spotifyLink = screen.getByRole('link', { name: /Listen on Spotify/i });

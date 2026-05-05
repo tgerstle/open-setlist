@@ -5,7 +5,7 @@ import type { APIRoute } from "astro";
 export const prerender = true;
 
 export const GET: APIRoute = () => {
-    const DB_PATH = resolve("../data/mkesetlist.db");
+    const DB_PATH = resolve("../data/localmusic.db");
     const db = new Database(DB_PATH, { readonly: true });
 
     const allShows = db

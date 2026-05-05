@@ -56,7 +56,7 @@ const rawVenues = getVenuesOverview().map((v) => ({
 }));
 
 // 3. Build Manifest Locally
-const DB_PATH = resolve("../data/mkesetlist.db");
+const DB_PATH = resolve("../data/localmusic.db");
 const db = new Database(DB_PATH, { readonly: true });
 const allDates = db.prepare(`SELECT event_date as date FROM shows`).all() as {
   date: string;
@@ -77,7 +77,7 @@ const initialManifest = {
 ---
 
 <Layout
-  title="Venue Map | MKE Setlist - All Milwaukee Music Venues"
+  title="Venue Map | Local Live Music Tracker - All Demo City Music Venues"
   activeView="map"
 >
   <div class="sticky top-14 z-40">

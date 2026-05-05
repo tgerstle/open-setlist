@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import { join } from 'node:path';
 import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 
-const DB_PATH = join('/Users/tgerstle/code/mkesetlist', 'data', 'mkesetlist.db');
+const DB_PATH = join('/Users/tgerstle/code/mkesetlist', 'data', 'localmusic.db');
 const STAGING_DIR = join('/Users/tgerstle/code/mkesetlist', 'data', 'enrichment_staging');
 
 function getDb() {
@@ -47,7 +47,7 @@ export function stageMissingArtists() {
     artists: missing.map(a => ({
       artist_name: a.artist_name,
       genres: ["Genre Pending"],
-      is_mke_local: false,
+      is_local: false,
       sounds_like: [],
       spotify_id: null,
       bandcamp_url: null,
@@ -75,12 +75,12 @@ export function commitProposal(filename) {
   
   const upsertStmt = db.prepare(`
     INSERT INTO artists_metadata (
-      artist_name, genres, sounds_like, is_mke_local, spotify_id, bandcamp_url, last_enriched_at
+      artist_name, genres, sounds_like, is_local, spotify_id, bandcamp_url, last_enriched_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(artist_name) DO UPDATE SET
       genres=excluded.genres,
       sounds_like=excluded.sounds_like,
-      is_mke_local=excluded.is_mke_local,
+      is_local=excluded.is_local,
       spotify_id=excluded.spotify_id,
       bandcamp_url=excluded.bandcamp_url,
       last_enriched_at=excluded.last_enriched_at
@@ -92,7 +92,7 @@ export function commitProposal(filename) {
         artist.artist_name,
         JSON.stringify(artist.genres),
         JSON.stringify(artist.sounds_like),
-        artist.is_mke_local ? 1 : 0,
+        artist.is_local ? 1 : 0,
         artist.spotify_id,
         artist.bandcamp_url,
         new Date().toISOString()
@@ -117,7 +117,7 @@ if (command === 'stage') {
     commitProposal(arg);
   }
 } else {
-  console.log('MKE Setlist Enrichment Tool');
+  console.log('Local Live Music Tracker Enrichment Tool');
   console.log('Commands:');
   console.log('  stage           - Find missing artists and create a proposal JSON');
   console.log('  commit <file>   - Save an approved proposal JSON to the database');

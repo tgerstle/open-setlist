@@ -13,7 +13,7 @@ describe('Artist Enrichment (Phase 3)', () => {
     db.prepare('INSERT INTO shows (id, venue_id, artist_name, event_date) VALUES (?, ?, ?, ?)').run('2', 'cactus-club', 'Bridget Everett', '2026-03-03');
 
     // Seed existing metadata for one
-    db.prepare('INSERT INTO artists_metadata (artist_name, genres, is_mke_local) VALUES (?, ?, ?)').run('Bridget Everett', '["Comedy"]', 0);
+    db.prepare('INSERT INTO artists_metadata (artist_name, genres, is_local) VALUES (?, ?, ?)').run('Bridget Everett', '["Comedy"]', 0);
 
     // 2. Mock Enrichment Agent
     const mockAgent = {
@@ -21,7 +21,7 @@ describe('Artist Enrichment (Phase 3)', () => {
         artist_name: 'The Gufs',
         genres: ['Alternative Rock', 'Pop Rock'],
         sounds_like: ['Matchbox Twenty', 'Gin Blossoms'],
-        is_mke_local: true,
+        is_local: true,
         spotify_id: 'spotify-id-123',
         bandcamp_url: null
       })
@@ -33,7 +33,7 @@ describe('Artist Enrichment (Phase 3)', () => {
     // 4. Verify results
     const gufsMeta = db.prepare('SELECT * FROM artists_metadata WHERE artist_name = ?').get('The Gufs');
     expect(gufsMeta).toBeDefined();
-    expect(gufsMeta.is_mke_local).toBe(1);
+    expect(gufsMeta.is_local).toBe(1);
     expect(JSON.parse(gufsMeta.genres)).toContain('Alternative Rock');
     
     // Verify the agent was only called for the NEW artist

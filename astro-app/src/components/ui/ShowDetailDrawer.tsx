@@ -83,7 +83,7 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 
   const encodedArtist = encodeURIComponent(artistName);
   const encodedVenue = encodeURIComponent(
-    (show?.venue_name || "") + " Milwaukee WI",
+    (show?.venue_name || "") + " Demo City WI",
   );
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedVenue}`;
   const spotifyUrl = `https://open.spotify.com/search/${encodedArtist}/artists`;
@@ -93,7 +93,7 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 
   // Create a highly robust fallback url pointing to Google Search for the venue and show if no ticket link was scraped
   const encodedSearch = encodeURIComponent(
-    `${artistName === "Unknown Artist" ? "" : artistName} ${show?.venue_name || ""} tickets Milwaukee WI`.trim()
+    `${artistName === "Unknown Artist" ? "" : artistName} ${show?.venue_name || ""} tickets Demo City WI`.trim()
   );
   const fallbackVenueUrl = `https://www.google.com/search?q=${encodedSearch}`;
   const finalCtaUrl = show?.ticket_url || fallbackVenueUrl;

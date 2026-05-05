@@ -23,7 +23,7 @@ switch (command) {
   case 'event':
     const eventId = args[1];
     if (!eventId) {
-      console.error('Usage: tsx mke-admin.ts event <event_id>');
+      console.error('Usage: tsx brand-admin.ts event <event_id>');
       process.exit(1);
     }
     console.log(JSON.stringify(getEventDetails(eventId), null, 2));
@@ -31,7 +31,7 @@ switch (command) {
   case 'venue':
     const targetVenue = args[1];
     if (!targetVenue) {
-      console.error('Usage: tsx mke-admin.ts venue <venue_id>');
+      console.error('Usage: tsx brand-admin.ts venue <venue_id>');
       process.exit(1);
     }
     console.log(JSON.stringify(getVenueDetails(targetVenue), null, 2));
@@ -39,7 +39,7 @@ switch (command) {
   case 'update-venue':
     const updateVenueId = args[1];
     if (!updateVenueId) {
-      console.error('Usage: tsx mke-admin.ts update-venue <venue_id> [--address="..."] [--url="..."]');
+      console.error('Usage: tsx brand-admin.ts update-venue <venue_id> [--address="..."] [--url="..."]');
       process.exit(1);
     }
     
@@ -64,5 +64,5 @@ switch (command) {
     }
     break;
   default:
-    console.error('Usage: tsx mke-admin.ts [health|venues|events|event <id>|venue <id>|update-venue <id>]');
+    console.error('Usage: tsx brand-admin.ts [health|venues|events|event <id>|venue <id>|update-venue <id>]');
 }

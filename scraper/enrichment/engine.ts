@@ -25,12 +25,12 @@ export const runEnrichment = async (db: Database.Database, agent: EnrichmentAgen
 
   const upsertMetadata = db.prepare(`
     INSERT INTO artists_metadata (
-      artist_name, genres, sounds_like, is_mke_local, spotify_id, bandcamp_url, last_enriched_at
+      artist_name, genres, sounds_like, is_local, spotify_id, bandcamp_url, last_enriched_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(artist_name) DO UPDATE SET
       genres=excluded.genres,
       sounds_like=excluded.sounds_like,
-      is_mke_local=excluded.is_mke_local,
+      is_local=excluded.is_local,
       spotify_id=excluded.spotify_id,
       bandcamp_url=excluded.bandcamp_url,
       last_enriched_at=excluded.last_enriched_at
@@ -45,7 +45,7 @@ export const runEnrichment = async (db: Database.Database, agent: EnrichmentAgen
         metadata.artist_name,
         JSON.stringify(metadata.genres),
         JSON.stringify(metadata.sounds_like),
-        metadata.is_mke_local ? 1 : 0,
+        metadata.is_local ? 1 : 0,
         metadata.spotify_id,
         metadata.bandcamp_url,
         new Date().toISOString()

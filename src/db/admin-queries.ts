@@ -14,7 +14,7 @@ const getDb = () => {
   const isAstroApp = cwd.endsWith("astro-app");
   const workspaceRoot = isAstroApp ? resolve(cwd, "..") : cwd;
 
-  const dbPath = process.env.DATABASE_PATH || resolve(workspaceRoot, "data/mkesetlist.db");
+  const dbPath = process.env.DATABASE_PATH || resolve(workspaceRoot, "data/localmusic.db");
   // Removed { readonly: true } to allow Venue metadata updates
   return new Database(dbPath);
 };

@@ -1,4 +1,4 @@
--- Phase 1 Schema: MKE Setlist
+-- Phase 1 Schema: Local Live Music Tracker
 
 CREATE TABLE IF NOT EXISTS venues (
   id TEXT PRIMARY KEY, -- slug (e.g., pabst-theater)
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS artists_metadata (
   artist_name TEXT PRIMARY KEY,
   genres TEXT, -- JSON array string
   sounds_like TEXT, -- JSON array string
-  is_mke_local INTEGER DEFAULT 0, -- 0 = false, 1 = true
+  is_local INTEGER DEFAULT 0, -- 0 = false, 1 = true
   spotify_id TEXT,
   bandcamp_url TEXT,
   last_enriched_at TEXT

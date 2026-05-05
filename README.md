@@ -1,78 +1,45 @@
-# MKE Setlist - Scraper & Frontend
+# Local Live Music Tracker
 
-This project is a monorepo for scraping Milwaukee concert venues and displaying them in an Astro-based frontend.
+An open-source boilerplate for building a hyper-local, community-driven live music tracker. Created with Astro, React, Tailwind, SQLite, and Playwright.
 
-## Project Structure
+This project is divided into two parts:
+1. **The Scraper Engine:** A robust Playwright + Stealth system designed to automate fetching shows from varied local venue websites.
+2. **The Frontend:** An Astro SSG + React SPA hybrid that displays an interactive feed and map of all upcoming shows.
 
-- `src/scrapers/`: Scraper engine and venue-specific plugins.
-- `src/db/`: SQLite database schema and helper functions.
-- `astro-app/`: Frontend website built with Astro.
-- `data/`: SQLite database file (`mkesetlist.db`).
-- `logs/`: Scraper audit logs (JSON) and error screenshots.
+## Prerequisites
+- Node.js (v20+)
+- npm
 
-## Getting Started
+## Quick Start
 
-### 1. Installation
+Get the boilerplate running locally in less than 5 minutes.
 
 ```bash
+# 1. Install dependencies
 npm install
 npm run web:install
-```
 
-### 2. Database Setup
+# 2. Setup your local environment
+cp .env.example .env
+cp astro-app/.env.example astro-app/.env
 
-Initialize the SQLite database with the schema and seed data:
-
-```bash
+# 3. Initialize your SQLite Database & Seed Mock Data
 npm run db:init
+npx tsx bin/generate-mock-db.ts
+
+# 4. Start the Development Server
+npm run dev
 ```
 
-### 3. Running the Scraper
+Your local interface will now be available at `http://localhost:4321`.
 
-To run the scraper and update the local database:
+## Architecture
 
-```bash
-npm run scrape
-```
+### The Scraper (`scraper/`)
+A scalable plugin system exists in `scraper/plugins/`. You simply export a function that takes a Playwright `Page` and a `venue_id`, scrapes the relevant calendar, and returns an array of `ScraperShow` objects. The core runner takes care of proxy obfuscation, stealth browser instantiation, audit saving, and intelligent database upserting.
 
-**How it works:**
-1. The `runner.ts` iterates through venues defined in `src/scrapers/runner.ts` (or `src/scrapers/index.ts`).
-2. It uses **Playwright** to navigate to the venue website.
-3. Venue-specific plugins (e.g., `src/scrapers/plugins/pabst.ts`) parse the page and return show data.
-4. Results are upserted into `data/mkesetlist.db` and an audit log is written to `logs/`.
+### The UI (`astro-app/`)
+Driven by Astro, utilizing `nanostores` for client-side state across independent React components (like the Venue Map and Feed List). The SQLite database is directly interrogated via Better-SQLite3. All styling is localized to generic `brand-*` tailwind classes.
 
-### 4. Testing
-
-This project uses **Vitest**.
-
-- **Run all tests:** `npm test`
-- **Run specific test:** `npm test tests/pabst_plugin.test.ts`
-- **Watch mode:** `npm run test:watch`
-
-## Troubleshooting "0 results on frontend"
-
-If you run `npm run build` or `npm run dev` and see 0 shows:
-
-1. **Check the Admin Dashboard (Dev-Only):**
-   Run the dev server and visit `http://localhost:4321/admin/dashboard` to see real-time scraper updates.
-2. **Inspect Latest via CLI:**
-   ```bash
-   npx tsx bin/admin-latest.ts
-   ```
-3. **Check the Scraper Logs:** Look in `logs/scraper-pabst-theater-YYYY-MM-DD.json` to see if the last run found any shows.
-4. **Inspect the Database:**
-   ```bash
-   sqlite3 data/mkesetlist.db "SELECT count(*) FROM shows;"
-   ```
-5. **Re-Scrape:** Run `npm run scrape` to ensure the database is populated before building the frontend.
-6. **Build Order:** The frontend fetches data at **build time**. If you update the scraper results, you must rebuild the frontend:
-   ```bash
-   npm run build
-   ```
-
-## Development Loop
-
-1. **Research:** Analyze venue site changes.
-2. **Test:** Add/update a test in `tests/` using a static HTML snippet.
-3. **Implement:** Update the plugin in `src/scrapers/plugins/`.
-4. **Verify:** Run the scraper (`npm run scrape`) and check the database.
+## Contributing
+Feel free to open issues or PRs addressing the core boilerplate stability. For your own local instance, simply fork or clone this repository and customize the `generate-mock-db.ts` and UI layout to fit your city!

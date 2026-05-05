@@ -6,18 +6,7 @@ import { writeFileSync } from "node:fs";
 import { launchStealthBrowser } from "./stealth";
 import { generateFingerprint, getProxyConfig } from "./identity";
 import { runStealthAudit } from "./audit";
-import { pabstScraper } from "../plugins/pabst";
-import { cactusScraper } from "../plugins/cactus";
-import { xrayScraper } from "../plugins/xray";
-import { shankScraper } from "../plugins/shank";
-import { raveScraper } from "../plugins/rave";
-import { cooperageScraper } from "../plugins/cooperage";
-import { madPlanetScraper } from "../plugins/madplanet";
-import { linnemansScraper } from "../plugins/linnemans";
-import { bremenScraper } from "../plugins/bremen";
-import { falconScraper } from "../plugins/falcon";
-import { jazzEstateScraper } from "../plugins/jazzestate";
-import { miramarScraper } from "../plugins/miramar";
+import { exampleVenueScraper } from "../plugins/example-venue";
 
 import { auditLogger } from "../../src/utils/audit-logger";
 
@@ -138,85 +127,15 @@ const isMainModule =
   (process.argv[1] === import.meta.filename ||
     process.argv[1].endsWith("runner.ts"));
 if (isMainModule) {
-  const dbPath = join(process.cwd(), "data", "mkesetlist.db");
+  const dbPath = join(process.cwd(), "data", "localmusic.db");
   const db = initDb(dbPath);
 
   const runAll = async () => {
     const venues = [
       {
-        id: "the-pabst-theater",
-        url: "https://www.pabsttheatergroup.com/venues/the-pabst-theater",
-        plugin: pabstScraper,
-      },
-      {
-        id: "the-riverside-theater",
-        url: "https://www.pabsttheatergroup.com/venues/the-riverside-theater",
-        plugin: pabstScraper,
-      },
-      {
-        id: "turner-hall-ballroom",
-        url: "https://www.pabsttheatergroup.com/venues/turner-hall-ballroom",
-        plugin: pabstScraper,
-      },
-      {
-        id: "vivarium",
-        url: "https://www.pabsttheatergroup.com/venues/vivarium",
-        plugin: pabstScraper,
-      },
-      {
-        id: "cactus-club",
-        url: "https://www.cactusclubmilwaukee.com/",
-        plugin: cactusScraper,
-      },
-      {
-        id: "x-ray-arcade",
-        url: "https://xrayarcade.com/calendar/",
-        plugin: xrayScraper,
-      },
-      {
-        id: "shank-hall",
-        url: "https://www.shankhall.com/schedule/",
-        plugin: shankScraper,
-      },
-      {
-        id: "the-rave-eagles-club",
-        url: "https://www.therave.com/",
-        plugin: raveScraper,
-      },
-      {
-        id: "the-cooperage",
-        url: "https://www.cooperagemke.com/upcoming-events",
-        plugin: cooperageScraper,
-      },
-      {
-        id: "mad-planet",
-        url: "http://www.mad-planet.net/events",
-        plugin: madPlanetScraper,
-      },
-      {
-        id: "linnemans-riverwest-inn",
-        url: "https://linnemans.com/events/",
-        plugin: linnemansScraper,
-      },
-      {
-        id: "bremen-cafe",
-        url: "https://bremencafe.com/calendar/",
-        plugin: bremenScraper,
-      },
-      {
-        id: "falcon-bowl",
-        url: "https://www.falconbowlmke.com/events",
-        plugin: falconScraper,
-      },
-      {
-        id: "the-jazz-estate",
-        url: "https://www.estatemke.com/events",
-        plugin: jazzEstateScraper,
-      },
-      {
-        id: "miramar-theatre",
-        url: "https://themiramartheatre.com/events/",
-        plugin: miramarScraper,
+        id: "example-venue",
+        url: "https://example-venue.com/calendar",
+        plugin: exampleVenueScraper,
       },
     ];
 

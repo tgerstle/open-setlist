@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import { join } from 'node:path';
 import { statSync } from 'node:fs';
 
-const DB_PATH = join(process.cwd(), '..', 'data', 'mkesetlist.db');
+const DB_PATH = join(process.cwd(), '..', 'data', 'localmusic.db');
 
 export function getDb() {
   return new Database(DB_PATH, { readonly: true });

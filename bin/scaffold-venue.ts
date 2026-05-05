@@ -20,7 +20,7 @@ async function run() {
     }
 
     // Add to active database
-    const dbPath = process.env.DATABASE_PATH || join(process.cwd(), 'data', 'mkesetlist.db');
+    const dbPath = process.env.DATABASE_PATH || join(process.cwd(), 'data', 'localmusic.db');
     const db = new Database(dbPath);
 
     db.prepare(`

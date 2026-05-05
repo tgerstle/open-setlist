@@ -87,7 +87,7 @@ export function MapView({ initialShows = [], venues }: MapViewProps) {
     return aggregateShowsByVenue(shows, venues);
   }, [shows, venues]);
 
-  // Center of Milwaukee
+  // Center of Demo City
   const center: [number, number] = [43.0389, -87.9065];
 
   return (
@@ -157,7 +157,7 @@ export function MapView({ initialShows = [], venues }: MapViewProps) {
                         {vd.venue.name}
                       </h3>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                        {vd.venue.neighborhood || "Milwaukee, WI"}
+                        {vd.venue.neighborhood || "Demo City, WI"}
                       </p>
                     </div>
 

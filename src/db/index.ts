@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const initDb = (dbPath: string = process.env.DATABASE_PATH || './mkesetlist.db') => {
+export const initDb = (dbPath: string = process.env.DATABASE_PATH || './localmusic.db') => {
   const db = new Database(dbPath);
   const schemaPath = process.env.SCHEMA_PATH || join(process.cwd(), 'src', 'db', 'schema.sql');
   const schema = readFileSync(schemaPath, 'utf8');

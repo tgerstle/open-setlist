@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import { join } from 'node:path';
 
-const DB_PATH = join(process.cwd(), 'data', 'mkesetlist.db');
+const DB_PATH = join(process.cwd(), 'data', 'localmusic.db');
 
 function getLatestImports(limit = 20) {
   const db = new Database(DB_PATH, { readonly: true });

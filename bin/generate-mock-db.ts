@@ -88,7 +88,7 @@ const main = async () => {
   `);
 
     const insertArtistMeta = db.prepare(`
-    INSERT INTO artists_metadata (artist_name, genres, is_mke_local)
+    INSERT INTO artists_metadata (artist_name, genres, is_local)
     VALUES (?, ?, ?)
   `);
 
@@ -119,11 +119,11 @@ const main = async () => {
             insertVenue.run(
                 venueId,
                 venueName,
-                faker.location.streetAddress() + ', Milwaukee, WI',
+                faker.location.streetAddress() + ', ' + faker.location.city() + ', ' + faker.location.state({ abbreviated: true }),
                 faker.internet.url(),
                 'mock',
-                faker.location.latitude({ max: 43.1, min: 42.9 }),
-                faker.location.longitude({ max: -87.8, min: -88.0 }),
+                faker.location.latitude({ max: 45.0, min: 35.0 }),
+                faker.location.longitude({ max: -80.0, min: -100.0 }),
                 faker.location.county(),
                 shortName,
                 themeColor

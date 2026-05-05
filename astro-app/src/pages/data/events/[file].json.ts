@@ -6,7 +6,7 @@ import type { Show } from "../../../types/models";
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const DB_PATH = resolve("../data/mkesetlist.db");
+  const DB_PATH = resolve("../data/localmusic.db");
   const db = new Database(DB_PATH, { readonly: true });
 
   // Fetch all shows, ordering sequentially By Date
