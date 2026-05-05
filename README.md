@@ -25,7 +25,7 @@ cp astro-app/.env.example astro-app/.env
 
 # 3. Initialize your SQLite Database & Seed Mock Data
 npm run db:init
-npx tsx bin/generate-mock-db.ts
+npx tsx bin/generate-mock-db.ts --venues 5 --shows 20
 
 # 4. Start the Development Server
 npm run dev
