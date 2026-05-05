@@ -6,7 +6,8 @@ set -e
 echo "🎸 Welcome to Local Live Music Tracker Setup!"
 echo "============================================="
 
-echo "📦 1/4: Installing frontend dependencies (root already installed)..."
+echo "📦 1/4: Installing root and frontend dependencies..."
+npm install
 npm run web:install
 
 echo "⚙️  2/4: Setting up environment variables..."

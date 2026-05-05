@@ -2,17 +2,14 @@ import { chromium, Page } from "playwright";
 import Database from "better-sqlite3";
 import { getPendingShows, updateShowEnrichment, initDb } from "../../src/db/index";
 import { join } from "path";
-import { pabstDetailExtractor } from "./plugins/pabst";
-import { cactusDetailExtractor } from "./plugins/cactus";
-import { cooperageDetailExtractor } from "./plugins/cooperage";
+import { exampleDetailExtractor } from "./plugins/example-enrichment";
 import { DetailScraperPlugin } from "./plugins/types";
 
 // A registry of detail-page scrapers. 
 // For now, this is empty or has a generic fallback, to simply mark as completed via DOM logic.
 export const detailExtractors: Record<string, DetailScraperPlugin> = {
-    "the-pabst-theater": pabstDetailExtractor,
-    "cactus-club": cactusDetailExtractor,
-    "the-cooperage": cooperageDetailExtractor
+    // Add your venue ID here to map to its detail extractor
+    "example-venue": exampleDetailExtractor
 };
 
 export const runShowEnrichmentPass = async (db: Database.Database) => {

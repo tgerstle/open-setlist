@@ -30,4 +30,4 @@ rm -rf astro-app/.astro
 
 echo "============================================="
 echo "✅ Repository has been completely reset."
-echo "🚀 Run 'npm install' and 'npm run setup' to start fresh."
+echo "🚀 Run 'npm run setup' to start fresh."

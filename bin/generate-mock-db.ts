@@ -61,14 +61,14 @@ const generateSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g,
 const main = async () => {
     const { venues: numVenues, shows: numShowsPerVenue } = await getAnswers();
 
-    const dbPath = join(process.cwd(), 'data', 'demo.db');
+    const dbPath = join(process.cwd(), 'data', 'localmusic.db');
 
     if (existsSync(dbPath)) {
-        console.log(`Removing existing demo database at ${dbPath}...`);
+        console.log(`Removing existing database at ${dbPath}...`);
         unlinkSync(dbPath);
     }
 
-    console.log(`Creating fresh demo database at ${dbPath}...`);
+    console.log(`Creating fresh database at ${dbPath}...`);
     const db = new Database(dbPath);
 
     // Initialize schema
@@ -113,17 +113,17 @@ const main = async () => {
         for (let i = 0; i < numVenues; i++) {
             const venueName = faker.company.name() + ' Theater';
             const venueId = generateSlug(venueName);
-            const shortName = venueName.split(' ').map(w => w[0]).join('').substring(0, 3).toUpperCase();
+            const shortName = venueName.replace(' Theater', '');
             const themeColor = faker.helpers.arrayElement(THEME_COLORS);
 
             insertVenue.run(
                 venueId,
                 venueName,
-                faker.location.streetAddress() + ', ' + faker.location.city() + ', ' + faker.location.state({ abbreviated: true }),
+                faker.location.streetAddress() + ', Milwaukee, WI',
                 faker.internet.url(),
                 'mock',
-                faker.location.latitude({ max: 45.0, min: 35.0 }),
-                faker.location.longitude({ max: -80.0, min: -100.0 }),
+                faker.location.latitude({ max: 43.15, min: 42.95 }),
+                faker.location.longitude({ max: -87.85, min: -88.05 }),
                 faker.location.county(),
                 shortName,
                 themeColor
@@ -176,9 +176,9 @@ const main = async () => {
     })();
 
     console.log('\\n✅ Successfully generated ' + numVenues + ' venues and ' + totalShows + ' shows!');
-    console.log('Demo DB is located at: ' + dbPath);
-    console.log('\\nTo use it, run the frontend with PUBLIC_DEMO=true:');
-    console.log('cross-env PUBLIC_DEMO=true npm run dev --prefix astro-app');
+    console.log('Database is located at: ' + dbPath);
+    console.log('\nTo test the frontend run:');
+    console.log('npm run dev');
 };
 
 main().catch(console.error);
