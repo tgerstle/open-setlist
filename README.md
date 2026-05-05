@@ -12,26 +12,30 @@ This project is divided into two parts:
 
 ## Quick Start
 
-Get the boilerplate running locally in less than 5 minutes.
+Get the boilerplate running locally with a single command.
 
 ```bash
-# 1. Install dependencies
-npm install
-npm run web:install
+# 1. Run the automated setup script
+# This installs all dependencies, configures .env files, initializes the SQLite database, and seeds mock data.
+npm run setup
 
-# 2. Setup your local environment
-cp .env.example .env
-cp astro-app/.env.example astro-app/.env
-
-# 3. Initialize your SQLite Database & Seed Mock Data
-npm run db:init
-npx tsx bin/generate-mock-db.ts --venues 5 --shows 20
-
-# 4. Start the Development Server
+# 2. Start the development server
 npm run dev
 ```
 
 Your local interface will now be available at `http://localhost:4321`.
+
+### Resetting the Environment
+If you ever want to wipe your local database, environment variables, and node_modules to start completely over from a clean slate, run:
+```bash
+npm run reset
+```
+
+## Customizing for Your City
+By default, the mock database generator (`bin/generate-mock-db.ts`) puts pins down near Milwaukee, WI, and the `.env` default overrides point to that map center.
+*   Update `PUBLIC_MAP_CENTER` in `astro-app/.env`
+*   Update the bounding box latitude/longitude limits in `bin/generate-mock-db.ts`
+*   Begin adding your own venue plugins using `scraper/plugins/example-venue.ts` as a template!
 
 ## Architecture
 
