@@ -1,0 +1,29 @@
+---
+import { getHealthStats } from '../../../../src/db/admin-queries';
+
+// We fetch this via SSR since this component is rendered server-side
+const stats = getHealthStats();
+---
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+  <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+    <h3 class="text-sm font-medium text-gray-500">Total Upcoming Shows</h3>
+    <p class="text-3xl font-bold text-gray-900 mt-2">{stats.totalUpcomingShows}</p>
+  </div>
+  
+  <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+    <h3 class="text-sm font-medium text-gray-500">Passed Shows (Archived)</h3>
+    <p class="text-3xl font-bold text-gray-900 mt-2">{stats.totalPassedShows}</p>
+  </div>
+  
+  <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+    <h3 class="text-sm font-medium text-gray-500">Venues Tracked</h3>
+    <p class="text-3xl font-bold text-gray-900 mt-2">{stats.totalVenuesTracked}</p>
+  </div>
+  
+  <div class="bg-white p-4 rounded-lg shadow-sm border border-red-200 bg-red-50">
+    <h3 class="text-sm font-medium text-red-800">Recent Scrape Errors</h3>
+    <p class="text-3xl font-bold text-red-600 mt-2">{stats.recentErrors}</p>
+    <p class="text-xs text-red-500 mt-1">Check audit logs</p>
+  </div>
+</div>

@@ -1,0 +1,430 @@
+---
+import "../styles/global.css";
+import Logo from "../components/Logo.astro";
+
+interface Props {
+  title: string;
+  activeView?: "feed" | "month" | "map";
+}
+
+const { title, activeView = "feed" } = Astro.props;
+const isDev = import.meta.env.DEV;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="MKE Setlist - Every Show in Milwaukee" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-[#f6f5f4] text-[rgba(0,0,0,0.95)] min-h-screen">
+    <header
+      class="sticky top-0 z-50 w-full bg-white border-b border-[rgba(0,0,0,0.1)]"
+    >
+      <div class="flex h-14 items-center px-4 md:px-6 max-w-7xl mx-auto w-full">
+        <!-- Brand -->
+        <a
+          href="/"
+          class="flex items-center gap-2 mr-4 flex-1 hover:no-underline group"
+        >
+          <div
+            class="w-8 h-8 bg-[#0075de] rounded-[4px] flex items-center justify-center text-white font-bold tracking-tighter transition-transform group-hover:scale-105"
+          >
+            MKE
+          </div>
+          <span
+            class="font-bold text-[rgba(0,0,0,0.95)] tracking-tight group-hover:text-[#0075de] transition-colors"
+          >
+            Setlist
+          </span>
+        </a>
+
+        <!-- View Toggle (Navigation) -->
+        <div
+          class="flex items-center p-1 bg-[#f6f5f4] rounded-[8px] border border-[rgba(0,0,0,0.05)]"
+        >
+          <a
+            href="/"
+            aria-label="Show feed"
+            class={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-[4px] transition-all ${activeView === "feed" ? "bg-white text-[rgba(0,0,0,0.95)] shadow-sm" : "text-[#615d59] hover:text-[rgba(0,0,0,0.95)] hover:bg-[rgba(0,0,0,0.02)]"}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-4 h-4"
+              ><line x1="8" y1="6" x2="21" y2="6"></line><line
+                x1="8"
+                y1="12"
+                x2="21"
+                y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line
+                x1="3"
+                y1="6"
+                x2="3.01"
+                y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"
+              ></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg
+            >
+            <span class="hidden sm:inline">Feed</span>
+          </a>
+
+          <a
+            href="/calendar"
+            aria-label="Show calendar"
+            class={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-[4px] transition-all ${activeView === "month" ? "bg-white text-[rgba(0,0,0,0.95)] shadow-sm" : "text-[#615d59] hover:text-[rgba(0,0,0,0.95)] hover:bg-[rgba(0,0,0,0.02)]"}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-4 h-4"
+              ><rect x="3" y="4" width="18" height="18" rx="2" ry="2"
+              ></rect><line x1="16" y1="2" x2="16" y2="6"></line><line
+                x1="8"
+                y1="2"
+                x2="8"
+                y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg
+            >
+            <span class="hidden sm:inline">Calendar</span>
+          </a>
+
+          <a
+            href="/map"
+            aria-label="Show map"
+            class={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-[4px] transition-all ${activeView === "map" ? "bg-white text-[rgba(0,0,0,0.95)] shadow-sm" : "text-[#615d59] hover:text-[rgba(0,0,0,0.95)] hover:bg-[rgba(0,0,0,0.02)]"}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-4 h-4"
+              ><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+              ></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line
+                x1="16"
+                y1="6"
+                x2="16"
+                y2="22"></line></svg
+            >
+            <span class="hidden sm:inline">Map</span>
+          </a>
+        </div>
+
+        <!-- Right side spacer to balance the flex layout -->
+        <div class="flex-1 flex justify-end flex-row items-center xl:gap-2">
+          {
+            isDev && (
+              <a
+                href="/admin/dashboard"
+                class="text-sm font-medium text-[#615d59] hover:text-[rgba(0,0,0,0.95)] hidden sm:block"
+              >
+                Admin
+              </a>
+            )
+          }
+          <button
+            id="hamburger-btn"
+            class="p-2 text-[#615d59] hover:text-black transition-colors z-50 relative -mr-2"
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><line x1="3" y1="12" x2="21" y2="12"></line><line
+                x1="3"
+                y1="6"
+                x2="21"
+                y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg
+            >
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Side Menu Drawer -->
+    <div
+      id="side-drawer"
+      class="fixed inset-0 z-[100] hidden items-end justify-end"
+    >
+      <!-- Backdrop -->
+      <div
+        id="drawer-backdrop"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 opacity-0"
+        aria-hidden="true"
+      >
+      </div>
+
+      <!-- Drawer -->
+      <div
+        id="drawer-content"
+        class="fixed right-0 top-0 bottom-0 w-full max-w-[320px] bg-[#f6f5f4] shadow-2xl transition-transform duration-300 translate-x-full overflow-y-auto flex flex-col z-[101]"
+      >
+        <div
+          class="flex h-14 items-center justify-between px-4 border-b border-[rgba(0,0,0,0.1)] bg-white shrink-0"
+        >
+          <span class="font-bold tracking-tight text-[rgba(0,0,0,0.95)]"
+            >Menu</span
+          >
+          <button
+            id="close-drawer-btn"
+            class="p-2 -mr-2 text-[#615d59] hover:text-black transition-colors"
+            aria-label="Close menu"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><line x1="18" y1="6" x2="6" y2="18"></line><line
+                x1="6"
+                y1="6"
+                x2="18"
+                y2="18"></line></svg
+            >
+          </button>
+        </div>
+
+        <div class="p-6 flex-1 flex flex-col gap-10">
+          <nav class="flex flex-col gap-4">
+            <a
+              href="/"
+              class="font-bold text-xl text-[rgba(0,0,0,0.95)] hover:text-[#0075de] transition-colors"
+              >Shows</a
+            >
+            <a
+              href="/calendar"
+              class="font-bold text-xl text-[rgba(0,0,0,0.95)] hover:text-[#0075de] transition-colors"
+              >Calendar</a
+            >
+            <a
+              href="/map"
+              class="font-bold text-xl text-[rgba(0,0,0,0.95)] hover:text-[#0075de] transition-colors"
+              >Map</a
+            >
+            <div class="h-px w-full bg-[rgba(0,0,0,0.1)] my-2"></div>
+            <a
+              href="/contact"
+              class="font-bold text-[rgba(0,0,0,0.7)] hover:text-[#0075de] transition-colors"
+              >Contact</a
+            >
+            <a
+              href="/privacy"
+              class="font-bold text-[rgba(0,0,0,0.7)] hover:text-[#0075de] transition-colors"
+              >Privacy Policy</a
+            >
+            <a
+              href="/terms"
+              class="font-bold text-[rgba(0,0,0,0.7)] hover:text-[#0075de] transition-colors"
+              >Terms of Service</a
+            >
+            {
+              isDev && (
+                <a
+                  href="/admin/dashboard"
+                  class="font-bold text-[#0075de] hover:text-[rgba(0,0,0,0.95)] transition-colors mt-2"
+                >
+                  Admin Dashboard
+                </a>
+              )
+            }
+          </nav>
+
+          <div
+            class="mt-auto space-y-4 pt-10 border-t border-[rgba(0,0,0,0.1)]"
+          >
+            <div class="flex items-center gap-2 mb-4">
+              <div
+                class="w-6 h-6 bg-[#0075de] rounded-[3px] flex items-center justify-center text-white text-[10px] font-bold tracking-tighter"
+              >
+                MKE
+              </div>
+              <span class="font-bold text-[rgba(0,0,0,0.95)] tracking-tight"
+                >Setlist</span
+              >
+            </div>
+            <p class="text-sm text-[rgba(0,0,0,0.7)] mb-4">
+              Built in Milwaukee for the local music scene. The most
+              comprehensive guide to live music in Milwaukee. Every venue, every
+              night.
+            </p>
+            <p class="text-[10px] text-[rgba(0,0,0,0.5)] leading-relaxed">
+              All information is provided for informational purposes only and is
+              subject to change without notice. Please verify exact details,
+              pricing, and availability directly with the venue or ticketing
+              provider. MKE Setlist does not sell tickets and is not affiliated
+              with or endorsed by any venues, artists, or brands listed. All
+              trademarks are the property of their respective owners.
+            </p>
+            <p class="text-[11px] text-[rgba(0,0,0,0.6)] font-bold mt-2">
+              © {new Date().getFullYear()} MKE Setlist. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <slot />
+
+    <!-- Drawer Logic -->
+    <script>
+      const btn = document.getElementById("hamburger-btn");
+      const closeBtn = document.getElementById("close-drawer-btn");
+      const drawer = document.getElementById("side-drawer");
+      const backdrop = document.getElementById("drawer-backdrop");
+      const content = document.getElementById("drawer-content");
+
+      function openDrawer() {
+        drawer.classList.remove("hidden");
+        // Force reflow
+        void drawer.offsetWidth;
+        backdrop.classList.remove("opacity-0");
+        content.classList.remove("translate-x-full");
+        document.body.style.overflow = "hidden";
+        btn.setAttribute("aria-expanded", "true");
+      }
+
+      function closeDrawer() {
+        backdrop.classList.add("opacity-0");
+        content.classList.add("translate-x-full");
+        document.body.style.overflow = "";
+        btn.setAttribute("aria-expanded", "false");
+
+        // Wait for transition to finish
+        setTimeout(() => {
+          drawer.classList.add("hidden");
+        }, 300);
+      }
+
+      btn?.addEventListener("click", openDrawer);
+      closeBtn?.addEventListener("click", closeDrawer);
+      backdrop?.addEventListener("click", closeDrawer);
+
+      // Close on escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !drawer.classList.contains("hidden")) {
+          closeDrawer();
+        }
+      });
+    </script>
+
+    <!-- Mobile Bottom Navigation: Visible only on small screens -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[rgba(0,0,0,0.1)] px-4 py-2 md:hidden"
+    >
+      <div class="flex justify-around items-center max-w-md mx-auto">
+        <a
+          href="/"
+          aria-label="Show feed"
+          class="flex flex-col items-center gap-1 p-2 text-[rgba(0,0,0,0.75)] hover:text-[#0075de] transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+            ></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg
+          >
+          <span class="text-[10px] font-bold uppercase tracking-wider"
+            >Shows</span
+          >
+        </a>
+        <a
+          href="/calendar"
+          aria-label="Show calendar"
+          class="flex flex-col items-center gap-1 p-2 text-[rgba(0,0,0,0.75)] hover:text-[#0075de] transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line
+              x1="16"
+              y1="2"
+              x2="16"
+              y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line
+              x1="3"
+              y1="10"
+              x2="21"
+              y2="10"></line></svg
+          >
+          <span class="text-[10px] font-bold uppercase tracking-wider"
+            >Calendar</span
+          >
+        </a>
+        <a
+          href="/map"
+          aria-label="Show map"
+          class="flex flex-col items-center gap-1 p-2 text-[rgba(0,0,0,0.75)] hover:text-[#0075de] transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+            ></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line
+              x1="16"
+              y1="6"
+              x2="16"
+              y2="22"></line></svg
+          >
+          <span class="text-[10px] font-bold uppercase tracking-wider">Map</span
+          >
+        </a>
+      </div>
+    </nav>
+  </body>
+</html>

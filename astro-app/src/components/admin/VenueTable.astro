@@ -1,0 +1,64 @@
+---
+import { getVenuesOverview } from '../../../../src/db/admin-queries';
+
+const venues = getVenuesOverview();
+---
+
+<div class="bg-white shadow-sm border border-gray-200 rounded-lg overflow-x-auto mt-8">
+  <div class="px-6 py-4 border-b border-gray-200">
+    <h2 class="text-lg font-medium text-gray-900">Venue Sync Overview</h2>
+    <p class="text-sm text-gray-500">A high-level view of all tracked venues and their currently scraped events.</p>
+  </div>
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Venue</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Upcoming Shows</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Passed Shows</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Scanned</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      {venues.map((venue) => (
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-gray-900">{venue.venue_name}</div>
+            <div class="text-sm text-gray-500 text-xs">{venue.venue_id}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {venue.upcoming_shows || 0}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {venue.passed_shows || 0}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {venue.last_scanned_at ? new Date(venue.last_scanned_at).toLocaleString() : 'Never'}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {venue.status === 'healthy' && (
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                Healthy
+              </span>
+            )}
+            {venue.status === 'error' && (
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                Error (0 found)
+              </span>
+            )}
+            {venue.status === 'stale' && (
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                Stale (>48h)
+              </span>
+            )}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+             <a href={`/admin/events?venue=${venue.venue_id}`} class="text-indigo-600 hover:text-indigo-900 mr-3">Drill down</a>
+             <a href={`/admin/venues/${venue.venue_id}`} class="text-gray-500 hover:text-gray-700">Edit</a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

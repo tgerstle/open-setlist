@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import KpiCards from '../../components/admin/KpiCards.astro';
+import VenueTable from '../../components/admin/VenueTable.astro';
+
+// Explicitly mark as Server-Side Rendered
+export const prerender = false;
+
+if (!import.meta.env.DEV) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<Layout title="Admin Data Dashboard">
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">MKE Setlist Operations Center</h1>
+        <p class="text-sm text-gray-500 mt-1">High-level health and venue overview.</p>
+      </div>
+      <div class="flex space-x-4">
+        <a href="/admin/events" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-medium text-sm transition-colors">
+          View All Events
+        </a>
+      </div>
+    </div>
+
+    <!-- Render the high-level stats cards -->
+    <KpiCards />
+
+    <!-- Render the aggregated venue overview -->
+    <VenueTable />
+    
+  </main>
+</Layout>

@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+/data/mkesetlist.db
+/astro-app/dist/
+/astro-app/.astro/
+/logs/
+node_modules/
+.DS_Store
+/data/mkesetlist.db
+/astro-app/dist/
+/astro-app/.astro/
+
+*storybook.log
+storybook-static
+playwright-report

@@ -1,0 +1,124 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import { getVenueDetails } from '../../../../../src/db/admin-queries';
+
+const { id } = Astro.params;
+const venue = id ? getVenueDetails(id) : null;
+
+if (!venue) {
+  return Astro.redirect('/admin/dashboard?error=venue-not-found');
+}
+---
+
+<Layout title={`Edit Venue: ${venue.name}`}>
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Edit {venue.name}</h1>
+      <a href="/admin/dashboard" class="text-indigo-600 hover:text-indigo-900">&larr; Back to Dashboard</a>
+    </div>
+
+    <div id="toast" class="hidden mb-4 p-4 rounded-md text-white font-medium transition-opacity duration-300"></div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <form id="venue-edit-form" class="space-y-6">
+          <input type="hidden" id="venue-id" value={venue.id} />
+          
+          <div>
+            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+            <div class="mt-1">
+              <input type="text" name="address" id="address" value={venue.address || ''} class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="e.g. 123 Main St, Milwaukee, WI 53202">
+            </div>
+          </div>
+
+          <div>
+            <label for="website_url" class="block text-sm font-medium text-gray-700">Website URL</label>
+            <div class="mt-1">
+              <input type="url" name="website_url" id="website_url" value={venue.website_url || ''} class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="https://www.example.com">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+            <div>
+              <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone</label>
+              <div class="mt-1">
+                <input type="text" name="timezone" id="timezone" value={venue.timezone || ''} class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="e.g. America/Chicago">
+              </div>
+            </div>
+
+            <div>
+              <label for="coordinates" class="block text-sm font-medium text-gray-700">Coordinates</label>
+              <div class="mt-1">
+                <input type="text" name="coordinates" id="coordinates" value={venue.coordinates || ''} class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="e.g. 43.0389, -87.9065">
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-5">
+            <div class="flex justify-end">
+              <button type="submit" id="submit-btn" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('venue-edit-form');
+      const toast = document.getElementById('toast');
+      const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+      
+      if (!form || !toast || !submitBtn) return;
+
+      const showToast = (message: string, isError: boolean = false) => {
+        toast.textContent = message;
+        toast.className = `mb-4 p-4 rounded-md text-white font-medium ${isError ? 'bg-red-500' : 'bg-green-500'} block`;
+        setTimeout(() => {
+          toast.className = 'hidden';
+        }, 5000);
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.textContent = 'Saving...';
+        submitBtn.disabled = true;
+
+        const id = (document.getElementById('venue-id') as HTMLInputElement).value;
+        const payload = {
+          address: (document.getElementById('address') as HTMLInputElement).value,
+          website_url: (document.getElementById('website_url') as HTMLInputElement).value,
+          timezone: (document.getElementById('timezone') as HTMLInputElement).value,
+          coordinates: (document.getElementById('coordinates') as HTMLInputElement).value,
+        };
+
+        try {
+          const res = await fetch(`/api/admin/venues/${id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            showToast('Venue updated successfully!');
+          } else {
+            const data = await res.json();
+            showToast(data.error || 'Failed to update venue', true);
+          }
+        } catch (err) {
+          showToast('An unexpected error occurred.', true);
+        } finally {
+          submitBtn.textContent = 'Save Changes';
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
+</Layout>

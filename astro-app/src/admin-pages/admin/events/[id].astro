@@ -1,0 +1,117 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getEventDetails } from '../../../../../src/db/admin-queries';
+
+export const prerender = false;
+
+if (!import.meta.env.DEV) {
+  return new Response(null, { status: 404 });
+}
+
+const { id } = Astro.params;
+const event = id ? getEventDetails(id) : null;
+
+if (!event) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<Layout title={`Event: ${event.artist} - Admin`}>
+  <main class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="mb-6 flex items-center justify-between">
+      <a href="/admin/events" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
+        &larr; Back to Events Explorer
+      </a>
+      {event.status === 'canceled' ? (
+        <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Canceled</span>
+      ) : (
+        <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+      )}
+    </div>
+
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
+      <!-- Header Header -->
+      <div class="px-6 py-5 border-b border-gray-200 bg-gray-50 flex justify-between items-start">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">{event.artist || 'Missing Artist'}</h1>
+          <p class="text-sm text-gray-500 mt-1">ID: <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">{event.id}</code></p>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="px-6 py-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        
+        <!-- Left Column -->
+        <div>
+          <h3 class="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Event Details</h3>
+          
+          <dl class="space-y-4">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Date</dt>
+              <dd class="mt-1 text-sm text-gray-900">{event.date || '<span class="text-red-500">Missing</span>'}</dd>
+            </div>
+            
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Venue</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <a href={`/admin/events?venue=${event.venue_id}`} class="text-indigo-600 hover:underline">
+                  {event.venue_name}
+                </a>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Age Restriction</dt>
+              <dd class="mt-1 text-sm text-gray-900">{event.age_restriction || 'Not specified'}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+          <h3 class="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Scraping Metadata</h3>
+          
+          <dl class="space-y-4">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Last Scanned At</dt>
+              <dd class="mt-1 text-sm text-gray-900">{event.added_at ? new Date(event.added_at).toLocaleString() : 'Unknown'}</dd>
+            </div>
+            
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Ticket Status</dt>
+              <dd class="mt-1 text-sm">
+                {event.is_sold_out 
+                  ? <span class="text-red-600 font-semibold">Sold Out</span> 
+                  : <span class="text-green-600 font-semibold">Tickets Available</span>}
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Ticket URL</dt>
+              <dd class="mt-1 text-sm text-gray-900 break-all">
+                {event.ticket_url ? (
+                  <a href={event.ticket_url} target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
+                    {event.ticket_url}
+                  </a>
+                ) : (
+                  'No link provided'
+                )}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+      </div>
+
+      <!-- Action Footer (Future Proofing) -->
+      <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end space-x-3">
+        <button disabled class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-400 bg-white cursor-not-allowed">
+          Edit Details (Coming Soon)
+        </button>
+        <button disabled class="px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-400 cursor-not-allowed">
+          Flag as Invalid (Coming Soon)
+        </button>
+      </div>
+    </div>
+  </main>
+</Layout>

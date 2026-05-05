@@ -1,0 +1,98 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getEvents, getVenuesOverview } from "../../../src/db/admin-queries";
+import { FilterBar } from "../components/ui/FilterBar";
+import { MapView } from "../components/views/MapView";
+import { DataOrchestrator } from "../components/logic/DataOrchestrator";
+import { ShowDetailDrawerContainer } from "../components/ui/ShowDetailDrawerContainer";
+import Database from "better-sqlite3";
+import { resolve } from "node:path";
+
+export const prerender = true;
+
+// 1. Determine Initial Window: Previous, Current, Next Months
+// Force UTC strings to avoid timezone mismatch when deployed
+// We want the local month of the machine building the app, formatted exactly to "YYYY-MM"
+const today = new Date();
+const currentMonthDate = new Date(
+  Date.UTC(today.getFullYear(), today.getMonth(), 1),
+);
+const previousMonthDate = new Date(
+  Date.UTC(today.getFullYear(), today.getMonth() - 1, 1),
+);
+const nextMonthDate = new Date(
+  Date.UTC(today.getFullYear(), today.getMonth() + 1, 1),
+);
+
+const currentMonthStr = currentMonthDate.toISOString().substring(0, 7);
+const previousMonthStr = previousMonthDate.toISOString().substring(0, 7);
+const nextMonthStr = nextMonthDate.toISOString().substring(0, 7);
+
+const initialLoadedMonths = [previousMonthStr, currentMonthStr, nextMonthStr];
+
+// 2. Filter Initial Payload
+// First day of previous month
+const startDate = previousMonthDate.toISOString().split("T")[0];
+// Last day of next month
+const endOfNextMonthDate = new Date(
+  Date.UTC(today.getFullYear(), today.getMonth() + 2, 0),
+);
+const endDate = endOfNextMonthDate.toISOString().split("T")[0];
+
+const { data: rawShows } = getEvents(
+  undefined,
+  1,
+  5000, // Large enough to hold 3 months of shows safely
+  "date",
+  "ASC",
+  startDate,
+  endDate,
+);
+
+const rawVenues = getVenuesOverview().map((v) => ({
+  id: v.venue_id,
+  name: v.venue_name,
+  coordinates: v.coordinates,
+}));
+
+// 3. Build Manifest Locally
+const DB_PATH = resolve("../data/mkesetlist.db");
+const db = new Database(DB_PATH, { readonly: true });
+const allDates = db.prepare(`SELECT event_date as date FROM shows`).all() as {
+  date: string;
+}[];
+db.close();
+
+const monthSet = new Set<string>();
+allDates.forEach((row) => {
+  monthSet.add(row.date.substring(0, 7));
+});
+const availableMonths = Array.from(monthSet).sort();
+
+const initialManifest = {
+  availableMonths: availableMonths,
+  totalShows: allDates.length,
+  lastUpdated: new Date().toISOString(),
+};
+---
+
+<Layout
+  title="Venue Map | MKE Setlist - All Milwaukee Music Venues"
+  activeView="map"
+>
+  <div class="sticky top-14 z-40">
+    <FilterBar client:only="react" initialVenues={rawVenues} />
+  </div>
+  <main
+    class="min-h-dvh flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-8 text-[rgba(0,0,0,0.95)]"
+  >
+    <DataOrchestrator
+      client:only="react"
+      initialShows={rawShows}
+      initialVenues={rawVenues}
+      initialView="map"
+    />
+    <MapView client:only="react" initialShows={rawShows} venues={rawVenues} />
+    <ShowDetailDrawerContainer client:only="react" />
+  </main>
+</Layout>

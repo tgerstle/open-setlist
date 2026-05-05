@@ -1,0 +1,157 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEvents } from '../../../../src/db/admin-queries';
+
+export const prerender = false;
+
+if (!import.meta.env.DEV) {
+  return new Response(null, { status: 404 });
+}
+
+// Get URL Search Params for Server-Side Pagination & Filtering
+const url = new URL(Astro.request.url);
+const venueId = url.searchParams.get('venue') || undefined;
+const page = parseInt(url.searchParams.get('page') || '1', 10);
+const limit = 50; // Fixed items per page for now
+const sortCol = url.searchParams.get('sortCol') || 'date';
+const sortDir = url.searchParams.get('sortDir') || 'DESC';
+
+// Fetch paginated data from core library
+const { data, total } = getEvents(venueId, page, limit, sortCol, sortDir);
+const events = data;
+const totalPages = Math.ceil(total / limit);
+
+// Helper function to build pagination/sort links while preserving existing query params
+const buildUrl = (updates: Record<string, string | number>) => {
+  const newUrl = new URL(Astro.request.url);
+  Object.entries(updates).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      newUrl.searchParams.set(key, String(value));
+    } else {
+      newUrl.searchParams.delete(key);
+    }
+  });
+  // Reset to page 1 if we change sort or venue
+  if (updates.sortCol || updates.venue) {
+    newUrl.searchParams.set('page', '1');
+  }
+  return newUrl.pathname + newUrl.search;
+};
+---
+
+<Layout title="Events Explorer - Admin">
+  <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Events Explorer</h1>
+        <p class="text-sm text-gray-500 mt-1">Viewing {total} total shows {venueId ? `for ${venueId}` : 'across all venues'}.</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        {venueId && (
+          <a href="/admin/events" class="text-sm text-indigo-600 hover:text-indigo-900 font-medium">
+            &larr; Clear Venue Filter
+          </a>
+        )}
+        <a href="/admin/dashboard" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+          Back to Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- The Data Grid -->
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-100">
+              <a href={buildUrl({ sortCol: 'artist', sortDir: sortCol === 'artist' && sortDir === 'ASC' ? 'DESC' : 'ASC' })} class="flex items-center w-full">
+                Artist
+                {sortCol === 'artist' && <span class="ml-1">{sortDir === 'ASC' ? '↑' : '↓'}</span>}
+              </a>
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Venue</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-100">
+              <a href={buildUrl({ sortCol: 'date', sortDir: sortCol === 'date' && sortDir === 'DESC' ? 'ASC' : 'DESC' })} class="flex items-center w-full">
+                Event Date
+                {sortCol === 'date' && <span class="ml-1">{sortDir === 'ASC' ? '↑' : '↓'}</span>}
+              </a>
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-100">
+               <a href={buildUrl({ sortCol: 'added_at', sortDir: sortCol === 'added_at' && sortDir === 'DESC' ? 'ASC' : 'DESC' })} class="flex items-center w-full">
+                Scanned At
+                {sortCol === 'added_at' && <span class="ml-1">{sortDir === 'ASC' ? '↑' : '↓'}</span>}
+              </a>
+            </th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {events.length === 0 ? (
+             <tr>
+              <td colspan="5" class="px-6 py-10 text-center text-gray-500">No events found matching this criteria.</td>
+            </tr>
+          ) : (
+            events.map((event) => {
+              const isMissingCritical = !event.date || !event.artist;
+              const rowClass = isMissingCritical ? 'bg-red-50' : 'hover:bg-gray-50';
+              
+              return (
+                <tr class={`transition-colors ${rowClass}`}>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <a href={`/admin/events/${event.id}`} class="hover:underline hover:text-indigo-600">
+                      {event.artist || '<span class="text-red-500 italic">Missing Artist</span>'}
+                    </a>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <a href={`/admin/events?venue=${event.venue_id}`} class="hover:underline">
+                      {event.venue_name || event.venue_id}
+                    </a>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {event.date || '<span class="text-red-500 font-bold">Missing Date</span>'}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {event.added_at ? new Date(event.added_at).toLocaleString() : 'Unknown'}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                    {event.status === 'canceled' ? (
+                       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Canceled</span>
+                    ) : (
+                       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                    )}
+                  </td>
+                </tr>
+              )
+            })
+          )}
+        </tbody>
+      </table>
+      
+      <!-- Pagination Controls -->
+      {totalPages > 1 && (
+        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+          <div class="text-sm text-gray-700">
+            Showing <span class="font-medium">{(page - 1) * limit + 1}</span> to <span class="font-medium">{Math.min(page * limit, total)}</span> of <span class="font-medium">{total}</span> results
+          </div>
+          <div class="flex space-x-2">
+            <a 
+              href={page > 1 ? buildUrl({ page: page - 1 }) : '#'} 
+              class={`px-3 py-1 border rounded-md text-sm font-medium ${page > 1 ? 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300' : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'}`}
+            >
+              Previous
+            </a>
+            <div class="flex items-center px-2 text-sm text-gray-600">
+              Page {page} of {totalPages}
+            </div>
+            <a 
+              href={page < totalPages ? buildUrl({ page: page + 1 }) : '#'} 
+              class={`px-3 py-1 border rounded-md text-sm font-medium ${page < totalPages ? 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300' : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'}`}
+            >
+              Next
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  </main>
+</Layout>

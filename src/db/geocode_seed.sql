@@ -1,0 +1,14 @@
+UPDATE venues SET latitude = 43.0398, longitude = -87.9103 WHERE id = 'the-pabst-theater';
+UPDATE venues SET latitude = 43.0389, longitude = -87.9115 WHERE id = 'the-riverside-theater';
+UPDATE venues SET latitude = 43.0416, longitude = -87.9157 WHERE id = 'turner-hall-ballroom';
+UPDATE venues SET latitude = 43.0388, longitude = -87.9439 WHERE id = 'the-rave-eagles-club';
+UPDATE venues SET latitude = 42.9976, longitude = -87.9048 WHERE id = 'cactus-club';
+UPDATE venues SET latitude = 43.0483, longitude = -87.8936 WHERE id = 'shank-hall';
+UPDATE venues SET latitude = 43.0232, longitude = -87.9056 WHERE id = 'the-cooperage';
+UPDATE venues SET latitude = 43.0538, longitude = -87.8863 WHERE id = 'vivarium';
+UPDATE venues SET latitude = 42.9555, longitude = -87.8614 WHERE id = 'x-ray-arcade';
+UPDATE venues SET latitude = 43.0624, longitude = -87.8876 WHERE id = 'the-jazz-estate';
+UPDATE venues SET latitude = 43.0676, longitude = -87.8994 WHERE id = 'mad-planet';
+UPDATE venues SET latitude = 43.0712, longitude = -87.8988 WHERE id = 'linnemans-riverwest-inn';
+UPDATE venues SET latitude = 43.0722, longitude = -87.8996 WHERE id = 'bremen-cafe';
+UPDATE venues SET latitude = 43.0722, longitude = -87.8995 WHERE id = 'falcon-bowl';
