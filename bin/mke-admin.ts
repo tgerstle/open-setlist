@@ -1,4 +1,4 @@
-import { getHealthStats, getVenuesOverview, getEvents, getEventDetails, getVenueDetails, updateVenueMetadata } from '../src/db/admin-queries';
+import { getHealthStats, getVenuesOverview, getEvents, getEventDetails, getVenueDetails, updateVenueMetadata } from '@open-setlist/db/admin-queries';
 
 const args = process.argv.slice(2);
 const command = args[0];

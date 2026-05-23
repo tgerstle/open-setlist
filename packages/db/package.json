@@ -1,0 +1,24 @@
+{
+	"name": "@open-setlist/db",
+	"version": "0.1.0",
+	"private": true,
+	"main": "index.ts",
+	"exports": {
+		".": "./index.ts",
+		"./admin-queries": "./admin-queries.ts"
+	},
+	"dependencies": {
+		"better-sqlite3": "^11.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.15",
+		"@open-setlist/biome-config": "workspace:*",
+		"@types/better-sqlite3": "^7.6.0",
+		"@vitest/coverage-v8": "^4.1.7",
+		"vitest": "^4.1.7"
+	},
+	"scripts": {
+		"test": "vitest run",
+		"lint": "biome check *.ts"
+	}
+}

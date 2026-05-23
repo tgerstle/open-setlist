@@ -1,0 +1,6 @@
+**/.astro/**
+**/coverage/**
+**/dist/**
+**/.turbo/**
+**/node_modules/**
+**/*.astro

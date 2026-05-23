@@ -1,0 +1,12 @@
+{
+  "venue_id": "example-venue",
+  "shows": [],
+  "timestamp": "2026-05-23T22:52:35.378Z",
+  "status": "failed",
+  "errors": [
+    {
+      "error_type": "NAV_FAIL",
+      "message": "Test error"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@open-setlist/types",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
+    "@open-setlist/biome-config": "workspace:*"
+  }
+}

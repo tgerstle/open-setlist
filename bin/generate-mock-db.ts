@@ -72,7 +72,7 @@ const main = async () => {
     const db = new Database(dbPath);
 
     // Initialize schema
-    const schemaPath = join(process.cwd(), 'src', 'db', 'schema.sql');
+    const schemaPath = join(process.cwd(), 'packages', 'db', 'schema.sql');
     const schema = readFileSync(schemaPath, 'utf8');
     db.exec(schema);
 

@@ -14,7 +14,7 @@ fi
 
 echo "🧹 1/3: Removing environment variables..."
 rm -f .env
-rm -f astro-app/.env
+rm -f apps/web/.env
 
 echo "🗄️  2/3: Deleting databases and logs..."
 rm -f data/*.db
@@ -24,10 +24,14 @@ touch logs/.gitkeep
 
 echo "🗑️  3/3: Removing installed node_modules and build caches..."
 rm -rf node_modules
-rm -rf astro-app/node_modules
-rm -rf astro-app/dist
-rm -rf astro-app/.astro
+rm -rf packages/*/node_modules
+rm -rf apps/*/node_modules
+rm -rf packages/*/dist
+rm -rf apps/*/dist
+rm -rf apps/web/.astro
+rm -rf .turbo
+rm -rf node_modules/.cache
 
 echo "============================================="
 echo "✅ Repository has been completely reset."
-echo "🚀 Run 'npm run setup' to start fresh."
+echo "🚀 Run 'pnpm run setup' to start fresh."

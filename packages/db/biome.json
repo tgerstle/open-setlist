@@ -1,0 +1,1 @@
+{"extends":["@open-setlist/biome-config"],"linter":{"rules":{"suspicious":{"noExplicitAny":"off"}}}}

@@ -1,0 +1,7 @@
+dist/
+coverage/
+.turbo/
+node_modules/
+
+.astro/
+.astro
