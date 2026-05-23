@@ -2,14 +2,14 @@ export interface AuditLogEntry {
 	timestamp: string;
 	level: "INFO" | "WARN" | "ERROR";
 	event: string;
-	details?: any;
+	details?: unknown;
 }
 
 export class AuditLogger {
 	public log(
 		event: string,
 		level: "INFO" | "WARN" | "ERROR" = "INFO",
-		details?: any,
+		details?: unknown,
 	) {
 		const entry: AuditLogEntry = {
 			timestamp: new Date().toISOString(),

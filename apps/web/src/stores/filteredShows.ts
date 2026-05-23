@@ -57,15 +57,17 @@ export const filteredShowsStore = computed(
 		}
 
 		if (dateRange?.from) {
+			const from = dateRange.from;
 			// Keep this simple for now
 			filtered = filtered.filter((show) => {
 				const evDate = show.event_date || show.date;
-				return evDate && evDate >= dateRange.from!;
+				return evDate && evDate >= from;
 			});
 			if (dateRange.to) {
+				const to = dateRange.to;
 				filtered = filtered.filter((show) => {
 					const evDate = show.event_date || show.date;
-					return evDate && evDate <= dateRange.to!;
+					return evDate && evDate <= to;
 				});
 			}
 		}
