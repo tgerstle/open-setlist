@@ -1,5 +1,5 @@
 ---
-import { getHealthStats } from '../../../../src/db/admin-queries';
+import { getHealthStats } from '@open-setlist/db/admin-queries';
 
 // We fetch this via SSR since this component is rendered server-side
 const stats = getHealthStats();

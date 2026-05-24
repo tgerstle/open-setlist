@@ -2,3 +2,4 @@ dist/
 coverage/
 .turbo/
 node_modules/
+logs/

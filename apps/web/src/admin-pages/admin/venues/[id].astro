@@ -2,7 +2,7 @@
 export const prerender = false;
 
 import Layout from '../../../layouts/Layout.astro';
-import { getVenueDetails } from '../../../../../src/db/admin-queries';
+import { getVenueDetails } from '@open-setlist/db/admin-queries';
 
 const { id } = Astro.params;
 const venue = id ? getVenueDetails(id) : null;
