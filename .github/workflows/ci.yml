@@ -43,7 +43,9 @@ jobs:
         run: pnpm run setup
 
       - name: Install Playwright Browsers & Deps
-        run: npx playwright install --with-deps
+        run: |
+          pnpm --filter=@open-setlist/web exec playwright install --with-deps
+          pnpm --filter=@open-setlist/scraper exec playwright install --with-deps
 
       - name: Lint (Biome & TypeScript)
         run: pnpm turbo run lint
