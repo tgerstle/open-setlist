@@ -1,8 +1,8 @@
+import type { Show } from "@open-setlist/types";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { selectedShowStore } from "../../stores/appState";
-import type { Show } from "@open-setlist/types";
 import { ShowCard } from "./ShowCard";
 
 describe("ShowCard Integration", () => {
@@ -11,7 +11,12 @@ describe("ShowCard Integration", () => {
 	});
 
 	it("updates selectedShowStore when clicked", async () => {
-		const mockShow: Show = { artist_name: "Dandy Warhols", event_date: "2026-05-15", is_sold_out: false, age_restriction: null, ticket_url: null,
+		const mockShow: Show = {
+			artist_name: "Dandy Warhols",
+			event_date: "2026-05-15",
+			is_sold_out: false,
+			age_restriction: null,
+			ticket_url: null,
 			id: "card-test-1",
 			artist: "Local Natives",
 			venue_id: "pabst-theater",
