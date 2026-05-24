@@ -81,18 +81,18 @@ const initialManifest = {
   activeView="map"
 >
   <div class="sticky top-14 z-40">
-    <FilterBar client:only="react" initialVenues={rawVenues} />
+    <FilterBar client:only="react" initialVenues={rawVenues as any} />
   </div>
   <main
     class="min-h-dvh flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-8 text-[rgba(0,0,0,0.95)]"
   >
     <DataOrchestrator
       client:only="react"
-      initialShows={rawShows}
-      initialVenues={rawVenues}
+      initialShows={rawShows as any}
+      initialVenues={rawVenues as any}
       initialView="map"
     />
-    <MapView client:only="react" initialShows={rawShows} venues={rawVenues} />
+    <MapView client:only="react" initialShows={rawShows as any} venues={rawVenues as any} />
     <ShowDetailDrawerContainer client:only="react" />
   </main>
 </Layout>

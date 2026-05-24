@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { selectedShowStore } from "../../stores/appState";
-import type { Show } from "../../types/models";
+import type { Show } from "@open-setlist/types";
 import { ShowDetailDrawer } from "./ShowDetailDrawer";
 
 describe("ShowDetailDrawer Overlay", () => {
@@ -11,7 +11,7 @@ describe("ShowDetailDrawer Overlay", () => {
 	});
 
 	it("updates selectedShowStore and creates dynamic URLs", async () => {
-		const mockShow: Show = {
+		const mockShow: Show = { artist_name: "Dandy Warhols", event_date: "2026-05-15", is_sold_out: false, age_restriction: null, ticket_url: null,
 			id: "drawer-test",
 			artist: "Dandy Warhols",
 			venue_id: "cactus-club",

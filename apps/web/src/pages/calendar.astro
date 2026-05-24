@@ -82,16 +82,16 @@ const initialManifest = {
   activeView="month"
 >
   <div class="sticky top-14 z-40">
-    <FilterBar client:load initialVenues={rawVenues} />
+    <FilterBar client:load initialVenues={rawVenues as any} />
   </div>
   <main class="min-h-dvh flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-8">
     <DataOrchestrator
       client:only="react"
-      initialShows={rawShows}
-      initialVenues={rawVenues}
+      initialShows={rawShows as any}
+      initialVenues={rawVenues as any}
       initialView="month"
     />
-    <MonthGridView client:only="react" initialShows={rawShows} />
+    <MonthGridView client:only="react" initialShows={rawShows as any} />
     <ShowDetailDrawerContainer client:idle />
   </main>
 </Layout>

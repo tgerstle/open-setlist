@@ -10,27 +10,36 @@ export interface Venue {
   scraper_type: "pabst" | "rave" | "cactus" | "generic";
   latitude: number | null;
   longitude: number | null;
+  coordinates?: string | null;
   neighborhood: string | null;
 }
 
 export interface Show {
   id: string; // UUID (e.g., venue-artist-date)
   venue_id: string;
+  venue_name?: string;
   venue_short_name?: string;
   venue_theme_color?: ThemeColor;
+  artist?: string;
   artist_name: string;
+  date?: string;
   event_date: string; // ISO 8601 (YYYY-MM-DD)
   event_time: string | null;
   ticket_url: string | null;
-  is_sold_out: boolean;
+  is_sold_out: boolean | number;
   age_restriction: string | null;
-  last_scanned_at: string;
+  last_scanned_at?: string | null;
   detail_url?: string | null;
   enrichment_status?: 'none' | 'pending' | 'completed' | 'failed';
   doors_time?: string | null;
-  price?: string | null;
+  price?: string | number | null;
+  ticket_price?: string | number | null;
   description?: string | null;
   image_url?: string | null;
+  status?: "active" | "canceled";
+  added_at?: string;
+  url?: string;
+  time?: string;
 }
 
 export interface ArtistMetadata {
@@ -77,4 +86,11 @@ export interface EventDetail extends EventRow {
   ticket_url: string | null;
   is_sold_out: boolean;
   age_restriction: string | null;
+}
+
+export type ViewType = "feed" | "month" | "map";
+
+export interface DateRange {
+  from: string | null;
+  to: string | null;
 }
