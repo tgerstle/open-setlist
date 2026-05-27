@@ -1,5 +1,5 @@
-import { writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { initDb, insertShow } from "@open-setlist/db";
 import { auditLogger } from "@open-setlist/utils/audit-logger";
 import type Database from "better-sqlite3";
@@ -63,14 +63,14 @@ export const runScraper = async (
 			auditLogger.log(`Failed to scrape ${venue_id}`, "ERROR", {
 				error: result.errors[0]?.message,
 			});
-			await page.screenshot({
-				path: join(
-					process.cwd(),
-					"logs",
-					"screenshots",
-					`${venue_id}-fail.png`,
-				),
-			});
+			const screenshotPath = join(
+				process.cwd(),
+				"logs",
+				"screenshots",
+				`${venue_id}-fail.png`,
+			);
+			mkdirSync(dirname(screenshotPath), { recursive: true });
+			await page.screenshot({ path: screenshotPath });
 		} else {
 			auditLogger.log(`Successfully scraped ${venue_id}`, "INFO", {
 				showsFound: result.shows.length,
@@ -108,6 +108,7 @@ export const runScraper = async (
 			"logs",
 			`scraper-${venue_id}-${new Date().toISOString().split("T")[0]}.json`,
 		);
+		mkdirSync(dirname(logPath), { recursive: true });
 		writeFileSync(logPath, JSON.stringify(result, null, 2));
 
 		return result;
