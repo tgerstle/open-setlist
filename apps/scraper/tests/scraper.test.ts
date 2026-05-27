@@ -1,6 +1,20 @@
 import { initDb } from "@open-setlist/db";
 import { describe, expect, it, vi } from "vitest";
 import { runScraper } from "../core/runner";
+import * as stealth from "../core/stealth";
+
+// Mock the stealth browser launch to avoid needing a real Playwright binary during unit tests
+vi.mock("../core/stealth", () => ({
+	launchStealthBrowser: vi.fn().mockResolvedValue({
+		newContext: vi.fn().mockResolvedValue({
+			newPage: vi.fn().mockResolvedValue({
+				goto: vi.fn().mockResolvedValue(true),
+				screenshot: vi.fn().mockResolvedValue(true),
+			}),
+		}),
+		close: vi.fn().mockResolvedValue(true),
+	}),
+}));
 
 describe("Scraper Engine (Phase 2)", () => {
 	it("should run a plugin and update the database with the results", async () => {
