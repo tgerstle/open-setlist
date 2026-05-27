@@ -55,6 +55,9 @@ jobs:
       - name: Run Web Playwright E2E Tests
         run: pnpm --filter=@open-setlist/web run test:e2e
 
+      - name: Run UI Storybook component tests (Vitest + Playwright)
+        run: pnpm --filter=@open-setlist/ui run test
+
       - name: Setup Storybook & UI Tests (A11y)
         run: |
           pnpm --filter=@open-setlist/ui run build-storybook || echo "Warning: Storybook build skip if not setup yet"

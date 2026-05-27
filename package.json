@@ -16,7 +16,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "turbo run lint",
-    "ci:local": "pnpm run setup && pnpm turbo run lint && pnpm turbo run build && pnpm turbo run test",
+    "ci:local": "pnpm run setup && pnpm turbo run lint && pnpm turbo run build && pnpm turbo run test --filter=!@open-setlist/ui",
     "ci:local:ui": "pnpm run setup && turbo run lint --filter=@open-setlist/config-tailwind... --filter=@open-setlist/ui... && pnpm --filter=@open-setlist/ui run build-storybook && pnpm --filter=@open-setlist/ui run test:a11y:ci && turbo run build && turbo run test"
   },
   "devDependencies": {
