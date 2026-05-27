@@ -13,16 +13,16 @@ type Story = StoryObj<typeof ShowDetailDrawer>;
 
 const mockShow: Show = {
 	id: "1",
-	artist:
+	artist_name:
 		"A Very Long Band Name That Might Wrap Or Truncate Depending On How We Have It Setup in the drawer",
 	venue_id: "cactus-club",
 	venue_name: "Cactus Club",
 	status: "active",
-	date: "2026-04-01",
+	event_date: "2026-04-01",
 	event_time: "8:00 PM",
 	price: "$15 ADV / $20 DOS",
-	url: "https://www.ticketmaster.com/extremely-long-url-that-might-break-layout-for-this-event-id=12345&foo=bar&baz=qux",
-	is_sold_out: false,
+	ticket_url: 'https://example.com',
+	age_restriction: '21+', is_sold_out: false,
 };
 
 export const Open: Story = {
@@ -34,7 +34,7 @@ export const Open: Story = {
 
 export const SoldOut: Story = {
 	args: {
-		show: { ...mockShow, is_sold_out: true },
+		show: { ...mockShow, age_restriction: '21+', is_sold_out: true },
 		onClose: () => alert("Closed!"),
 	},
 };

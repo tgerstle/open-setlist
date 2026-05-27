@@ -1,15 +1,13 @@
-import { useStore } from "@nanostores/react";
 import type { ViewType } from "@open-setlist/types";
 import { Calendar, List, Map } from "lucide-react";
-import { activeViewStore } from "../../stores/appState";
 
 interface AppHeaderProps {
+	activeView: ViewType;
+	onViewChange: (view: ViewType) => void;
 	isDev?: boolean;
 }
 
-export function AppHeader({ isDev }: AppHeaderProps) {
-	const activeView = useStore(activeViewStore);
-	const _onViewChange = (view: ViewType) => activeViewStore.set(view);
+export function AppHeader({ isDev, activeView, onViewChange }: AppHeaderProps) {
 
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white border-b border-[rgba(0,0,0,0.1)]">

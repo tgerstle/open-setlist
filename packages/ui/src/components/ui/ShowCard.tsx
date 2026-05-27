@@ -54,7 +54,7 @@ export function ShowCard({ show, onClick }: ShowCardProps) {
 					</span>
 				) : null}
 				<VenuePill
-					name={show.venue_name}
+					name={show.venue_name!} 
 					id={show.venue_id}
 					shortName={show.venue_short_name}
 					themeColor={show.venue_theme_color}

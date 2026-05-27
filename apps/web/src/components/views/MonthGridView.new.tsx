@@ -11,8 +11,8 @@ import {
 	selectedShowStore,
 } from "../../stores/appState";
 import { filteredShowsStore } from "../../stores/filteredShows";
-import { DayEventsModal } from "../ui/DayEventsModal";
-import { ShowPill } from "../ui/ShowPill";
+import { DayEventsModal } from "@open-setlist/ui/src/components/ui/DayEventsModal";
+import { ShowPill } from "@open-setlist/ui/src/components/ui/ShowPill";
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

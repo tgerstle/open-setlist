@@ -1,4 +1,3 @@
-import { useStore } from "@nanostores/react";
 import type { Show } from "@open-setlist/types";
 import {
 	Calendar as CalendarIcon,
@@ -13,7 +12,6 @@ import {
 	X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { venuesStore } from "../../stores/appState";
 import { VenuePill } from "./VenuePill";
 
 interface ShowDetailDrawerProps {
@@ -23,8 +21,7 @@ interface ShowDetailDrawerProps {
 
 export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 	const [isVisible, setIsVisible] = useState(false);
-	const venues = useStore(venuesStore);
-
+	
 	// Handle animation mounting
 	useEffect(() => {
 		if (show) {
@@ -68,10 +65,10 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 		const fallbackProviders =
 			"axs.com,ticketmaster.com,venuepilot.com,eventbrite.com,etix.com,ticketweb.com,dice.fm,pabsttheatergroup.com,livenation.com";
 		const rawProviders =
-			import.meta.env?.PUBLIC_TICKET_PROVIDERS || fallbackProviders;
-		const providersList = rawProviders.split(",").map((p) => p.trim());
+			(import.meta as any).env?.PUBLIC_TICKET_PROVIDERS || fallbackProviders;
+		const providersList = rawProviders.split(",").map((p: string) => p.trim());
 
-		return providersList.some((provider) => lowerUrl.includes(provider));
+		return providersList.some((provider: string) => lowerUrl.includes(provider));
 	};
 
 	const getTicketCtaText = () => {
@@ -91,8 +88,7 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 	const spotifyUrl = `https://open.spotify.com/search/${encodedArtist}/artists`;
 	const youtubeUrl = `https://www.youtube.com/results?search_query=${encodedArtist}+live`;
 
-	const _venue = venues.find((v) => v.id === show?.venue_id);
-
+	
 	// Create a highly robust fallback url pointing to Google Search for the venue and show if no ticket link was scraped
 	const encodedSearch = encodeURIComponent(
 		`${artistName === "Unknown Artist" ? "" : artistName} ${show?.venue_name || ""} tickets Demo City WI`.trim(),
@@ -110,6 +106,9 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 
 			{/* Drawer Panel */}
 			<div
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="show-detail-title"
 				className={`fixed inset-y-0 right-0 z-[101] w-full max-w-md bg-white shadow-[var(--shadow-lg)] border-l border-[rgba(0,0,0,0.1)] transform transition-transform duration-300 ease-in-out flex flex-col ${show ? "translate-x-0" : "translate-x-full"}`}
 			>
 				{/* Header / Close Button */}
@@ -120,6 +119,7 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 					<button
 						onClick={onClose}
 						className="p-2 -mr-2 text-[#615d59] hover:bg-[#f6f5f4] hover:text-[rgba(0,0,0,0.95)] rounded-full transition-colors"
+						aria-label="Close details"
 					>
 						<X className="w-5 h-5" />
 					</button>
@@ -135,13 +135,16 @@ export function ShowDetailDrawer({ show, onClose }: ShowDetailDrawerProps) {
 									Sold Out
 								</span>
 							)}
-							<h2 className="text-3xl sm:text-4xl font-bold text-[rgba(0,0,0,0.95)] tracking-[-1.5px] leading-[1.1] mb-4">
+							<h2 
+								id="show-detail-title"
+								className="text-3xl sm:text-4xl font-bold text-[rgba(0,0,0,0.95)] tracking-[-1.5px] leading-[1.1] mb-4"
+							>
 								{artistName}
 							</h2>
 
 							<div className="flex flex-wrap items-center gap-2">
 								<VenuePill
-									name={show.venue_name}
+									name={show.venue_name!} 
 									shortName={show.venue_short_name}
 									themeColor={show.venue_theme_color}
 								/>

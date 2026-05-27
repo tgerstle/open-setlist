@@ -1,35 +1,35 @@
-import { useStore } from "@nanostores/react";
-import type { Venue } from "@open-setlist/types";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Filter, X } from "lucide-react";
-import React, { Suspense, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import {
-	dateRangeStore,
-	searchQueryStore,
-	selectedShowStore,
-	selectedVenueStore,
-	topVisibleVenueStore,
-} from "../../stores/appState";
 import { Button } from "./button";
+import type { Venue } from "@open-setlist/types";
 
-const FilterModalContent = React.lazy(() =>
-	import("./FilterModalContent").then((m) => ({
-		default: m.FilterModalContent,
-	})),
-);
 
-interface FilterBarProps {
+
+
+export interface FilterBarProps {
 	initialVenues: Venue[];
+	searchQuery: string;
+	selectedVenue: string | null;
+	dateRange: { from: string | null; to: string | null } | undefined;
+	topVenue: string | null;
+	selectedShow: any | null;
+	onClearFilters: () => void;
+	children?: (isOpen: boolean, close: () => void) => React.ReactNode;
 }
 
-export function FilterBar({ initialVenues }: FilterBarProps) {
+export function FilterBar({
+	initialVenues,
+	searchQuery,
+	selectedVenue,
+	dateRange,
+	topVenue,
+	selectedShow,
+	onClearFilters,
+	children,
+}: FilterBarProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const searchQuery = useStore(searchQueryStore);
-	const selectedVenue = useStore(selectedVenueStore);
-	const dateRange = useStore(dateRangeStore);
-	const topVenue = useStore(topVisibleVenueStore);
-	const selectedShow = useStore(selectedShowStore);
 
 	const activeFiltersCount = [
 		searchQuery ? 1 : 0,
@@ -109,11 +109,7 @@ export function FilterBar({ initialVenues }: FilterBarProps) {
 
 					{activeFiltersCount > 0 && (
 						<button
-							onClick={() => {
-								searchQueryStore.set("");
-								selectedVenueStore.set(null);
-								dateRangeStore.set(undefined);
-							}}
+							onClick={onClearFilters}
 							className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded hover:bg-slate-100 transition-colors"
 						>
 							<X className="w-4 h-4" />
@@ -159,21 +155,7 @@ export function FilterBar({ initialVenues }: FilterBarProps) {
 									</div>
 
 									<div className="overflow-y-auto flex-1">
-										<Suspense
-											fallback={
-												<div className="p-8 text-center text-slate-500 flex items-center justify-center flex-col gap-3">
-													<div className="w-8 h-8 border-4 border-slate-200 border-t-[#097fe8] rounded-full animate-spin"></div>
-													<span className="text-sm font-medium">
-														Loading filters...
-													</span>
-												</div>
-											}
-										>
-											<FilterModalContent
-												initialVenues={initialVenues}
-												close={() => setIsOpen(false)}
-											/>
-										</Suspense>
+										{children && children(isOpen, () => setIsOpen(false))}
 									</div>
 								</motion.div>
 							</motion.div>

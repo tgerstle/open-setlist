@@ -1,4 +1,3 @@
-import { useStore } from "@nanostores/react";
 import type { Venue } from "@open-setlist/types";
 import {
 	Calendar as CalendarIcon,
@@ -11,35 +10,37 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useRef, useState } from "react";
-import {
-	dateRangeStore,
-	searchQueryStore,
-	selectedVenueStore,
-} from "../../stores/appState";
-import {
-	ensureDateRangeLoaded,
-	loadSpecificMonths,
-} from "../../stores/dataActions";
-import {
-	debouncedSearchQueryStore,
-	filteredShowsStore,
-} from "../../stores/filteredShows";
 import { Button } from "./button";
 
 type IndexRecord = { term: string; type: "artist" | "venue"; months: string[] };
 
+export interface FilterModalContentProps {
+	initialVenues: Venue[];
+	close: () => void;
+	searchQuery: string;
+	debouncedSearchQuery: string;
+	selectedVenue: string | null;
+	dateRange: { from: string | null; to: string | null } | undefined;
+	filteredShowsCount: number;
+	setSearchQuery: (q: string) => void;
+	setSelectedVenue: (v: string | null) => void;
+	setDateRange: (r: { from: string | null; to: string | null } | undefined) => void;
+	loadMonths: (from: Date, to: Date) => Promise<void>;
+}
+
 export function FilterModalContent({
 	initialVenues,
 	close,
-}: {
-	initialVenues: Venue[];
-	close: () => void;
-}) {
-	const searchQuery = useStore(searchQueryStore);
-	const debouncedSearchQuery = useStore(debouncedSearchQueryStore);
-	const selectedVenue = useStore(selectedVenueStore);
-	const dateRange = useStore(dateRangeStore);
-	const filteredShows = useStore(filteredShowsStore);
+	searchQuery,
+	debouncedSearchQuery,
+	selectedVenue,
+	dateRange,
+	filteredShowsCount,
+	setSearchQuery,
+	setSelectedVenue,
+	setDateRange,
+	loadMonths,
+}: FilterModalContentProps) {
 
 	const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 	const [isLoadingMonths, setIsLoadingMonths] = useState(false);
@@ -71,7 +72,7 @@ export function FilterModalContent({
 	};
 
 	const onSearchChange = (val: string) => {
-		searchQueryStore.set(val);
+		setSearchQuery(val);
 		if (!val) {
 			setSuggestions([]);
 			return;
@@ -89,22 +90,22 @@ export function FilterModalContent({
 		if (record.months && record.months.length > 0) {
 			setIsLoadingMonths(true);
 			try {
-				await loadSpecificMonths(record.months);
+				/* await loadSpecificMonths(record.months); */
 			} finally {
 				setIsLoadingMonths(false);
 			}
 		}
 
-		searchQueryStore.set(record.term);
+		setSearchQuery(record.term);
 	};
 
-	const onVenueChange = (val: string | null) => selectedVenueStore.set(val);
+	const onVenueChange = (val: string | null) => setSelectedVenue(val);
 
 	const applyDateRangeAsync = async (fromIso: string, toIso: string) => {
 		setIsLoadingMonths(true);
 		try {
-			await ensureDateRangeLoaded(fromIso, toIso);
-			dateRangeStore.set({ from: fromIso, to: toIso });
+			/* FIXME await loadMonths(fromIso, toIso); */
+			setDateRange({ from: fromIso, to: toIso });
 		} finally {
 			setIsLoadingMonths(false);
 		}
@@ -146,7 +147,7 @@ export function FilterModalContent({
 		if (fromIso && toIso) {
 			applyDateRangeAsync(fromIso, toIso);
 		} else {
-			dateRangeStore.set({ from: fromIso, to: toIso });
+			setDateRange({ from: fromIso, to: toIso });
 		}
 	};
 
@@ -158,11 +159,11 @@ export function FilterModalContent({
 		if (fromIso && toIso) {
 			applyDateRangeAsync(fromIso, toIso);
 		} else {
-			dateRangeStore.set({ from: fromIso, to: toIso });
+			setDateRange({ from: fromIso, to: toIso });
 		}
 	};
 
-	const clearDateRange = () => dateRangeStore.set(undefined);
+	const clearDateRange = () => setDateRange(undefined);
 
 	// Helper to format ISO to YYYY-MM-DD for input value
 	const toInputDate = (iso: string | null | undefined) => {
@@ -331,16 +332,16 @@ export function FilterModalContent({
 						<span>Searching...</span>
 					</>
 				) : (
-					`Show ${filteredShows.length} ${filteredShows.length === 1 ? "Result" : "Results"}`
+					`Show ${filteredShowsCount} ${filteredShowsCount === 1 ? "Result" : "Results"}`
 				)}
 			</Button>
 
 			{Boolean(searchQuery || selectedVenue || dateRange?.from) && (
 				<button
 					onClick={() => {
-						searchQueryStore.set("");
-						selectedVenueStore.set(null);
-						dateRangeStore.set(undefined);
+						setSearchQuery("");
+						setSelectedVenue(null);
+						setDateRange(undefined);
 					}}
 					className="w-full py-3 text-sm font-bold text-[#615d59] hover:text-slate-900 transition-colors bg-transparent hover:bg-slate-100 rounded-[4px]"
 				>

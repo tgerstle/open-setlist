@@ -1,10 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getEvents, getVenuesOverview } from "@open-setlist/db/admin-queries";
-import { FilterBar } from "../components/ui/FilterBar";
+import { FilterBarLogic } from "../components/logic/FilterBarLogic";
 import { DailyFeedView } from "../components/views/DailyFeedView";
 import { DataOrchestrator } from "../components/logic/DataOrchestrator";
-import { ShowDetailDrawerContainer } from "../components/ui/ShowDetailDrawerContainer";
+import { ShowDetailDrawerLogic } from "../components/logic/ShowDetailDrawerLogic";
 import Database from "better-sqlite3";
 import { resolve } from "node:path";
 
@@ -56,7 +56,7 @@ const initialManifest = {
 
 <Layout title="Local Live Music Tracker" activeView="feed">
   <div class="sticky top-14 z-40">
-    <FilterBar client:only="react" initialVenues={rawVenues as any}>
+    <FilterBarLogic client:only="react" initialVenues={rawVenues as any}>
       <div
         slot="fallback"
         class="w-full border-b border-[rgba(0,0,0,0.1)] py-[10px] px-4 md:px-6 bg-white"
@@ -70,7 +70,7 @@ const initialManifest = {
           </div>
         </div>
       </div>
-    </FilterBar>
+    </FilterBarLogic>
   </div>
   <main class="min-h-dvh flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-8">
     <DataOrchestrator
@@ -80,6 +80,6 @@ const initialManifest = {
       initialView="feed"
     />
     <DailyFeedView client:only="react" initialShows={initialShows as any} />
-    <ShowDetailDrawerContainer client:idle />
+    <ShowDetailDrawerLogic client:idle />
   </main>
 </Layout>

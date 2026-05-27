@@ -14,7 +14,7 @@ import {
 	aggregateShowsByVenue,
 	type VenueData,
 } from "../../utils/show-transformers";
-import { ShowPill } from "../ui/ShowPill";
+import { ShowPill } from "@open-setlist/ui/src/components/ui/ShowPill";
 
 // Lazy-load Leaflet CSS only when this component is mounted
 if (typeof window !== "undefined") {

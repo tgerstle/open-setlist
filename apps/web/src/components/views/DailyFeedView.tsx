@@ -13,7 +13,7 @@ import {
 import { fetchNewerMonth, fetchOlderMonth } from "../../stores/dataActions";
 import { filteredShowsStore } from "../../stores/filteredShows";
 import { groupByDate } from "../../utils/show-transformers";
-import { ShowCard } from "../ui/ShowCard";
+import { ShowCard } from "@open-setlist/ui/src/components/ui/ShowCard";
 
 export function DailyFeedView({
 	initialShows = [],

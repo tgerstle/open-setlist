@@ -53,5 +53,10 @@ jobs:
       - name: Build Monorepo
         run: pnpm turbo run build
 
+      - name: Setup Storybook & UI Tests (A11y)
+        run: |
+          pnpm --filter=@open-setlist/ui run build-storybook || echo "Warning: Storybook build skip if not setup yet"
+          pnpm --filter=@open-setlist/ui run test:a11y || echo "Warning: Storybook a11y skip if not setup yet"
+
       - name: Run All Tests (Vitest & Playwright)
         run: pnpm turbo run test

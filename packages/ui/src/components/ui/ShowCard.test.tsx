@@ -1,13 +1,14 @@
+import "@testing-library/jest-dom/vitest";
 import type { Show } from "@open-setlist/types";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
-import { selectedShowStore } from "../../stores/appState";
+
 import { ShowCard } from "./ShowCard";
 
 describe("ShowCard Integration", () => {
 	beforeEach(() => {
-		selectedShowStore.set(null);
+		
 	});
 
 	it("updates selectedShowStore when clicked", async () => {
@@ -26,11 +27,9 @@ describe("ShowCard Integration", () => {
 			event_time: "7:00 PM",
 		};
 
-		render(
-			<ShowCard
-				show={mockShow}
-				onClick={() => selectedShowStore.set(mockShow)}
-			/>,
+		let clicked = false;
+	render(
+			<ShowCard show={mockShow} onClick={() => { clicked = true }} />,
 		);
 
 		const user = userEvent.setup();
@@ -40,6 +39,6 @@ describe("ShowCard Integration", () => {
 		await user.click(artistText);
 
 		// Assert the global store has ingested the card's data
-		expect(selectedShowStore.get()).toStrictEqual(mockShow);
+		expect(clicked).toBe(true);
 	});
 });

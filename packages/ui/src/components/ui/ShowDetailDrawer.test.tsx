@@ -1,16 +1,14 @@
+import "@testing-library/jest-dom/vitest";
 import type { Show } from "@open-setlist/types";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
-import { selectedShowStore } from "../../stores/appState";
 import { ShowDetailDrawer } from "./ShowDetailDrawer";
 
 describe("ShowDetailDrawer Overlay", () => {
-	beforeEach(() => {
-		selectedShowStore.set(null);
-	});
-
+	
 	it("updates selectedShowStore and creates dynamic URLs", async () => {
+		let closeCalled = false;
 		const mockShow: Show = {
 			artist_name: "Dandy Warhols",
 			event_date: "2026-05-15",
@@ -28,15 +26,12 @@ describe("ShowDetailDrawer Overlay", () => {
 			url: "https://example.com",
 		};
 
-		// Simulate updating store like ShowCard onClick would do
-		selectedShowStore.set(mockShow);
-		expect(selectedShowStore.get()?.artist).toBe("Dandy Warhols");
-
+		
 		// Render Drawer
 		render(
 			<ShowDetailDrawer
 				show={mockShow}
-				onClose={() => selectedShowStore.set(null)}
+				onClose={() => { closeCalled = true; }}
 			/>,
 		);
 
@@ -65,6 +60,6 @@ describe("ShowDetailDrawer Overlay", () => {
 		// Usually the first button is the X close button if no other aria-label is provided, or we can look for it by its icon. Let's just click the first button
 		await user.click(closeBtns[0]);
 
-		expect(selectedShowStore.get()).toBeNull();
+		expect(closeCalled).toBe(true);
 	});
 });

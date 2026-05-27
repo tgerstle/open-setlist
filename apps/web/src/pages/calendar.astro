@@ -1,10 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getEvents, getVenuesOverview } from "@open-setlist/db/admin-queries";
-import { FilterBar } from "../components/ui/FilterBar";
+import { FilterBarLogic } from "../components/logic/FilterBarLogic";
 import { MonthGridView } from "../components/views/MonthGridView";
 import { DataOrchestrator } from "../components/logic/DataOrchestrator";
-import { ShowDetailDrawerContainer } from "../components/ui/ShowDetailDrawerContainer";
+import { ShowDetailDrawerLogic } from "../components/logic/ShowDetailDrawerLogic";
 import Database from "better-sqlite3";
 import { resolve } from "node:path";
 
@@ -82,7 +82,7 @@ const initialManifest = {
   activeView="month"
 >
   <div class="sticky top-14 z-40">
-    <FilterBar client:load initialVenues={rawVenues as any} />
+    <FilterBarLogic client:load initialVenues={rawVenues as any} />
   </div>
   <main class="min-h-dvh flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-8">
     <DataOrchestrator
@@ -92,6 +92,6 @@ const initialManifest = {
       initialView="month"
     />
     <MonthGridView client:only="react" initialShows={rawShows as any} />
-    <ShowDetailDrawerContainer client:idle />
+    <ShowDetailDrawerLogic client:idle />
   </main>
 </Layout>
