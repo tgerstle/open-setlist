@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
-import { selectedShowStore } from "../../stores/appState";
 import { ShowDetailDrawer } from "@open-setlist/ui/src/components/ui/ShowDetailDrawer";
+import { selectedShowStore } from "../../stores/appState";
 
 export function ShowDetailDrawerLogic() {
 	const selectedShow = useStore(selectedShowStore);

@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import type { Show } from "@open-setlist/types";
+import { ShowCard } from "@open-setlist/ui/src/components/ui/ShowCard";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GroupedVirtuoso } from "react-virtuoso";
@@ -13,7 +14,6 @@ import {
 import { fetchNewerMonth, fetchOlderMonth } from "../../stores/dataActions";
 import { filteredShowsStore } from "../../stores/filteredShows";
 import { groupByDate } from "../../utils/show-transformers";
-import { ShowCard } from "@open-setlist/ui/src/components/ui/ShowCard";
 
 export function DailyFeedView({
 	initialShows = [],

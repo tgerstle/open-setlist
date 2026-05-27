@@ -1,5 +1,7 @@
 import { useStore } from "@nanostores/react";
 import type { Show } from "@open-setlist/types";
+import { DayEventsModal } from "@open-setlist/ui/src/components/ui/DayEventsModal";
+import { ShowPill } from "@open-setlist/ui/src/components/ui/ShowPill";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import {
@@ -11,8 +13,6 @@ import {
 	selectedShowStore,
 } from "../../stores/appState";
 import { filteredShowsStore } from "../../stores/filteredShows";
-import { DayEventsModal } from "@open-setlist/ui/src/components/ui/DayEventsModal";
-import { ShowPill } from "@open-setlist/ui/src/components/ui/ShowPill";
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

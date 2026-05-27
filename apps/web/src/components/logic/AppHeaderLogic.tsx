@@ -4,5 +4,11 @@ import { activeViewStore } from "../../stores/appState";
 
 export function AppHeaderLogic({ isDev }: { isDev?: boolean }) {
 	const activeView = useStore(activeViewStore);
-	return <AppHeader isDev={isDev} activeView={activeView} onViewChange={activeViewStore.set} />;
+	return (
+		<AppHeader
+			isDev={isDev}
+			activeView={activeView}
+			onViewChange={activeViewStore.set}
+		/>
+	);
 }

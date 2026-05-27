@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import type { Show, Venue } from "@open-setlist/types";
+import { ShowPill } from "@open-setlist/ui/src/components/ui/ShowPill";
 import { motion } from "framer-motion";
 import L from "leaflet";
 import { useEffect, useMemo } from "react";
@@ -14,7 +15,6 @@ import {
 	aggregateShowsByVenue,
 	type VenueData,
 } from "../../utils/show-transformers";
-import { ShowPill } from "@open-setlist/ui/src/components/ui/ShowPill";
 
 // Lazy-load Leaflet CSS only when this component is mounted
 if (typeof window !== "undefined") {
